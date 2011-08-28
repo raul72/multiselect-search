@@ -9,23 +9,23 @@
 		height: 200px;
 	}
 	</style>
+	<script type="text/javascript">
+	window.onload = function(){
+		var conf = {
+			// class name for the input where you search
+			searchbox_class: '',
+			// id for the div containing the select and the searchbox
+			container_id: 'example_id',
+			// class name for the same div
+			container_class: 'example_class',
+			// function that checks if item name matches searchterm 
+			// match: function(searchterm, item) {return !!item.match(new RegExp(searchterm));}
+		};
+		multiselect_search(document.getElementById('example'), conf);
+	};
+	</script>
 </head>
 <body>
-<script type="text/javascript">
-window.onload = function(){
-	var conf = {
-		// class name for the input where you search
-		searchbox_class: '',
-		// id for the div containing the select and the searchbox
-		container_id: 'example_id',
-		// class name for the same div
-		container_class: 'example_class',
-		// function that checks if item name matches searchterm 
-		// match: function(searchterm, item) {return !!item.match(new RegExp(searchterm));}
-	};
-	multiselect_search(document.getElementById('example'), conf);
-};
-</script>
 <form>
 <select multiple size="20" id="example" name="example" class="multiselect">
 	<option value="africa_abidjan">Africa - Abidjan</option>
@@ -440,5 +440,6 @@ window.onload = function(){
 <br>
 <input type="submit">
 </form>
+<a href="http://github.com/raul72/multiselect-search"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/71eeaab9d563c2b3c590319b398dd35683265e85/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub"></a>
 </body>
 </html>
