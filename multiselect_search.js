@@ -30,14 +30,13 @@
 
 	function init() {
 		// mark ctrl key as either up or down
-		// TODO: this is broken in IE atm (but workarounded in select-onchange event)
-		addEventSimple(window, 'keydown', function (e) {
+		addEventSimple(document, 'keydown', function (e) {
 			var k = e.keyCode || e.which;
 			if (k === 17) {
 				ctrl_key_down = true;
 			}
 		});
-		addEventSimple(window, 'keyup', function (e) {
+		addEventSimple(document, 'keyup', function (e) {
 			var k = e.keyCode || e.which;
 			if (k === 17) {
 				ctrl_key_down = false;
