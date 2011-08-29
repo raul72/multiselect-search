@@ -11,18 +11,29 @@
 	</style>
 	<script type="text/javascript">
 	window.onload = function(){
-		var conf = {
-			// class name for the input where you search
-			searchbox_class: '',
-			// id for the div containing the select and the searchbox
-			container_id: 'example_id',
-			// class name for the same div
-			container_class: 'example_class'
-			// function that checks if item name matches searchterm 
-			// match: function(searchterm, item) {return !!item.match(new RegExp(searchterm));}
-		},
-		ms = multiselect_search(document.getElementById('example'), conf);
-		//ms.onchange = function(){alert(ms.get_selected_values());}
+		var selected_values = document.getElementById('selected_values'),
+			conf = {
+				// class name for the input where you search
+				searchbox_class: '',
+				// id for the div containing the select and the searchbox
+				container_id: 'example_id',
+				// class name for the same div
+				container_class: 'example_class'
+				// function that checks if item name matches searchterm 
+				// match: function(searchterm, item) {return !!item.match(new RegExp(searchterm));}
+			},
+			ms = multiselect_search(document.getElementById('example'), conf);
+
+		function show_selected_values() {
+			var vals = ms.get_selected_values();
+			if (vals.length) {
+				selected_values.innerHTML = 'Selected items: ' + vals.join(', ');
+			} else {
+				selected_values.innerHTML = 'no items selected';
+			}
+		}
+		show_selected_values();
+		ms.onchange = show_selected_values;
 	};
 	</script>
 </head>
@@ -437,6 +448,7 @@
 	<option value="pacific_wallis">Pacific - Wallis</option>
 	<option value="utc">UTC</option>
 </select>
+<span id="selected_values"></span><br />
 <small>Hold down CTRL to select multiple values</small>
 <br>
 <input type="submit">
