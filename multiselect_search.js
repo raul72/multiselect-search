@@ -7,30 +7,57 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 (function(){
+	var ctrl_key_down = false,
+		initialized = false;
+
+	/**
+	* @see http://www.webmasterworld.com/javascript/3304115.htm
+	*/
+	function insertafter(newChild, refChild) {
+		refChild.parentNode.insertBefore(newChild, refChild.nextSibling);
+	}
+
+	/**
+	* @see http://www.quirksmode.org/js/eventSimple.html
+	*/
+	function addEventSimple(obj, evt, fn) {
+		if (obj.addEventListener) {
+			obj.addEventListener(evt, fn, false);
+		} else if (obj.attachEvent) {
+			obj.attachEvent('on' + evt, fn);
+		}
+	}
+
+	function init() {
+		// mark ctrl key as either up or down
+		// TODO: this is broken in IE atm (but workarounded in select-onchange event)
+		addEventSimple(window, 'keydown', function (e) {
+			var k = e.keyCode || e.which;
+			if (k === 17) {
+				ctrl_key_down = true;
+			}
+		});
+		addEventSimple(window, 'keyup', function (e) {
+			var k = e.keyCode || e.which;
+			if (k === 17) {
+				ctrl_key_down = false;
+			}
+		});
+	}
+
 	window.multiselect_search = function (ob, settings) {
 		if (!ob || !ob.nodeName || ob.nodeName.toString().toLowerCase() !== 'select' || !ob.multiple) {
 			// do nothing if given element isn't multiple select
 			return;
 		}
 
+		if (!initialized) {
+			init();
+			initialized = true;
+		}
+
 		settings = settings || {};
 		settings.match = settings.match || function (searchterm, item) {return !!item.match(new RegExp(searchterm, "ig"));};
-		/**
-		* @see http://www.webmasterworld.com/javascript/3304115.htm
-		*/
-		function insertafter(newChild, refChild) {
-			refChild.parentNode.insertBefore(newChild, refChild.nextSibling);
-		}
-		/**
-		* @see http://www.quirksmode.org/js/eventSimple.html
-		*/
-		function addEventSimple(obj, evt, fn) {
-			if (obj.addEventListener) {
-				obj.addEventListener(evt, fn, false);
-			} else if (obj.attachEvent) {
-				obj.attachEvent('on' + evt, fn);
-			}
-		}
 
 		function get_list(ob) {
 			var i,
@@ -69,23 +96,7 @@
 			// new select where we add/remove options form
 			select = document.createElement('select'),
 			last_search = '',
-			ctrl_key_down = false,
 			i;
-
-		// mark ctrl key as either up or down
-		// TODO: this is broken in IE atm (but workarounded in select-onchange event)
-		addEventSimple(window, 'keydown', function (e) {
-			var k = e.keyCode || e.which;
-			if (k === 17) {
-				ctrl_key_down = true;
-			}
-		});
-		addEventSimple(window, 'keyup', function (e) {
-			var k = e.keyCode || e.which;
-			if (k === 17) {
-				ctrl_key_down = false;
-			}
-		});
 
 		function clearSelect() {
 			while (select.hasChildNodes()) {
