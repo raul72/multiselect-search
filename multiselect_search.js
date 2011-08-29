@@ -98,12 +98,6 @@
 			last_search = '',
 			i;
 
-		function clearSelect() {
-			while (select.hasChildNodes()) {
-				select.removeChild(select.firstChild);
-			}
-		}
-
 		function search() {
 			// NOTE: don't use "this" as for IE this is window for others input element
 			var term = searchbox.value,
@@ -112,13 +106,16 @@
 				return;
 			}
 			last_search = term;
-			clearSelect();
+
 			for (i in list) {
 				if (list.hasOwnProperty(i)) {
 					if (settings.match(term, list[i].text)) {
+						// always attach all matching options
+						// this keeps them in the original order
 						select.appendChild(list[i].n_node);
 						list[i].visible = true;
-					} else {
+					} else if (list[i].visible) {
+						select.removeChild(list[i].n_node);
 						list[i].visible = false;
 					}
 				}
