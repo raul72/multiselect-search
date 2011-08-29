@@ -47,7 +47,7 @@
 	window.multiselect_search = function (ob, settings) {
 		if (!ob || !ob.nodeName || ob.nodeName.toString().toLowerCase() !== 'select' || !ob.multiple) {
 			// do nothing if given element isn't multiple select
-			return;
+			return false;
 		}
 
 		if (!initialized) {
@@ -95,7 +95,18 @@
 			// new select where we add/remove options form
 			select = document.createElement('select'),
 			last_search = '',
-			i;
+			i,
+			instance = {};
+
+		function get_selected_values() {
+			var r = [], i;
+			for (i in list) {
+				if (list.hasOwnProperty(i) && list[i].o_node.selected) {
+					r[r.length] = list[i].text;
+				}
+			}
+			return r;
+		}
 
 		function search() {
 			// NOTE: don't use "this" as for IE this is window for others input element
@@ -138,11 +149,7 @@
 		}
 
 		addEventSimple(select, 'change', function (e) {
-			// only IE has propery ctrlKey for change event
 			var i;
-			if (e.ctrlKey === true || e.ctrlKey === false) {
-				ctrl_key_down = e.ctrlKey;
-			}
 			for (i in list) {
 				if (list.hasOwnProperty(i)) {
 					if (!ctrl_key_down && list[i].visible == false) {
@@ -151,6 +158,9 @@
 						list[i].o_node.selected = list[i].n_node.selected;
 					}
 				}
+			}
+			if (instance.onchange) {
+				instance.onchange();
 			}
 		});
 
@@ -166,5 +176,8 @@
 
 		ob.style.display = 'none';
 		insertafter(div, ob);
+
+		instance.get_selected_values = get_selected_values;
+		return instance;
 	}
 })();

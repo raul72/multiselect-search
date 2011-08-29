@@ -17,11 +17,12 @@
 			// id for the div containing the select and the searchbox
 			container_id: 'example_id',
 			// class name for the same div
-			container_class: 'example_class',
+			container_class: 'example_class'
 			// function that checks if item name matches searchterm 
 			// match: function(searchterm, item) {return !!item.match(new RegExp(searchterm));}
-		};
-		multiselect_search(document.getElementById('example'), conf);
+		},
+		ms = multiselect_search(document.getElementById('example'), conf);
+		//ms.onchange = function(){alert(ms.get_selected_values());}
 	};
 	</script>
 </head>
