@@ -11,14 +11,14 @@ function multiselect_search(ob, settings) {
 		// do nothing if given element isn't multiple select
 		return;
 	}
-	
+
 	settings = settings || {};
 	settings.match = settings.match || function (searchterm, item) {return !!item.match(new RegExp(searchterm, "ig"));};
 	/**
 	 * @see http://www.webmasterworld.com/javascript/3304115.htm
-	 */  
-	function insertafter(newChild, refChild) { 
-		refChild.parentNode.insertBefore(newChild, refChild.nextSibling); 
+	 */
+	function insertafter(newChild, refChild) {
+		refChild.parentNode.insertBefore(newChild, refChild.nextSibling);
 	}
 	/**
 	 * @see http://www.quirksmode.org/js/eventSimple.html
@@ -30,7 +30,7 @@ function multiselect_search(ob, settings) {
 			obj.attachEvent('on' + evt, fn);
 		}
 	}
-	
+
 	function get_list(ob) {
 		var i,
 			cnodes = ob.childNodes,
@@ -41,16 +41,16 @@ function multiselect_search(ob, settings) {
 
 			new_node.innerHTML = text;
 			new_node.selected = node.selected;
-		
+
 			return {
 				text: text,
 				o_node: node,
 				n_node: new_node,
 				visible: true
-			};					
+			};
 		}
 		for (i in cnodes) {
-			// NOTE: For IE there is no hasOwnProperty method for childNodes 
+			// NOTE: For IE there is no hasOwnProperty method for childNodes
 			if (!cnodes.hasOwnProperty || cnodes.hasOwnProperty(i)) {
 				if (cnodes[i].nodeName && cnodes[i].nodeName.toString().toLowerCase() === 'option') {
 					list[list.length] = new_list_element(cnodes[i]);
@@ -86,7 +86,7 @@ function multiselect_search(ob, settings) {
 
 	function clearSelect() {
 		while (select.hasChildNodes()) {
-			select.removeChild(select.firstChild); 
+			select.removeChild(select.firstChild);
 		}
 	}
 
@@ -116,7 +116,7 @@ function multiselect_search(ob, settings) {
 		searchbox.className = settings.searchbox_class;
 	}
 	addEventSimple(searchbox, 'keyup', search);
-	
+
 	select.multiple = true;
 	if (ob.className) {
 		select.className = ob.className;
@@ -153,7 +153,7 @@ function multiselect_search(ob, settings) {
 	div.appendChild(searchbox);
 	div.appendChild(document.createElement('br'));
 	div.appendChild(select);
-	
+
 	ob.style.display = 'none';
 	insertafter(div, ob);
 }
