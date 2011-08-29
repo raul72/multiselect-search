@@ -74,12 +74,14 @@ function multiselect_search(ob, settings) {
 	// mark ctrl key as either up or down
 	// TODO: this is broken in IE atm (but workarounded in select-onchange event)
 	addEventSimple(window, 'keydown', function (e) {
-		if (e.ctrlKey) {
+		var k = e.keyCode || e.which;
+		if (k === 17) {
 			ctrl_key_down = true;
 		}
 	});
 	addEventSimple(window, 'keyup', function (e) {
-		if (!e.ctrlKey) {
+		var k = e.keyCode || e.which;
+		if (k === 17) {
 			ctrl_key_down = false;
 		}
 	});
