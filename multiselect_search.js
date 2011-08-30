@@ -119,7 +119,7 @@
 
 			for (i in list) {
 				if (list.hasOwnProperty(i)) {
-					if (settings.match(term, list[i].text)) {
+					if (!term || settings.match(term, list[i].text)) {
 						// always attach all matching options
 						// this keeps them in the original order
 						select.appendChild(list[i].n_node);
