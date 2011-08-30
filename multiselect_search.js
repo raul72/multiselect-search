@@ -8,7 +8,17 @@
  */
 (function(){
 	var ctrl_key_down = false,
-		initialized = false;
+		initialized = false,
+		last_match,
+		last_regexp;
+
+	function match(searchterm, item) {
+		if (last_match != searchterm) {
+			last_regexp = new RegExp(searchterm, "i");
+			last_match = searchterm;
+		}
+		return !!item.match(last_regexp);
+	}
 
 	/**
 	* @see http://www.webmasterworld.com/javascript/3304115.htm
@@ -56,7 +66,7 @@
 		}
 
 		settings = settings || {};
-		settings.match = settings.match || function (searchterm, item) {return !!item.match(new RegExp(searchterm, "ig"));};
+		settings.match = settings.match || match;
 
 		function get_list(ob) {
 			var i,
