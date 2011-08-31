@@ -130,10 +130,19 @@
 			for (i in list) {
 				if (list.hasOwnProperty(i)) {
 					if (!term || settings.match(term, list[i].text)) {
-						// always attach all matching options
-						// this keeps them in the original order
-						select.appendChild(list[i].n_node);
+						if (!list[i].visible) {
+							if (last_node === null) {
+								if (select.firstChild) {
+									select.insertBefore(list[i].n_node, select.firstChild);
+								} else {
+									select.appendChild(list[i].n_node);
+								}
+							} else {
+								insertafter(list[i].n_node, last_node)
+							}
+						}
 						list[i].visible = true;
+						last_node = list[i].n_node;
 					} else if (list[i].visible) {
 						select.removeChild(list[i].n_node);
 						list[i].visible = false;
