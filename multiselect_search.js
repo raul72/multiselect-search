@@ -133,11 +133,7 @@
 					if (!term || settings.match(term, list[i].text)) {
 						if (!list[i].visible) {
 							if (last_node === null) {
-								if (select.firstChild) {
-									select.insertBefore(list[i].n_node, select.firstChild);
-								} else {
-									select.appendChild(list[i].n_node);
-								}
+								select.insertBefore(list[i].n_node, select.firstChild);
 							} else {
 								insertafter(list[i].n_node, last_node)
 							}
