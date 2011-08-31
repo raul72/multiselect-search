@@ -121,7 +121,8 @@
 		function search() {
 			// NOTE: don't use "this" as for IE this is window for others input element
 			var term = searchbox.value,
-				i;
+				i,
+				last_node = null;
 			if (term === last_search) {
 				return;
 			}
