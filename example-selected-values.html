@@ -16,10 +16,7 @@
 
 			var msg = 'Selected items:';
 			for (i = 0; i < vals.length; i++) {
-				msg +=  ' ' + vals[i];
-				if (i && i + 1 < vals.length) {
-					msg += ',';
-				}
+				msg +=  ' ' + vals[i] + (i + 1 < vals.length ? ',' : '');
 				if (i % 5 == 1) {
 					msg += '<br>';
 				}
