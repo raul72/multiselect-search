@@ -8,6 +8,7 @@
  */
 (function(){
 	var ctrl_key_down = false,
+		cmd_key_down = false,
 		initialized = false,
 		last_match,
 		last_regexp;
@@ -45,11 +46,17 @@
 			if (k === 17) {
 				ctrl_key_down = true;
 			}
+			if (k === 91) {
+				cmd_key_down = true;
+			}
 		});
 		addEventSimple(document, 'keyup', function (e) {
 			var k = e.keyCode || e.which;
 			if (k === 17) {
 				ctrl_key_down = false;
+			}
+			if (k === 91) {
+				cmd_key_down = false;
 			}
 		});
 	}
@@ -168,7 +175,7 @@
 			var i;
 			for (i in list) {
 				if (list.hasOwnProperty(i)) {
-					if (!ctrl_key_down && list[i].visible == false) {
+					if (!(ctrl_key_down || cmd_key_down) && list[i].visible == false) {
 						list[i].o_node.selected = list[i].n_node.selected = false;
 					} else {
 						list[i].o_node.selected = list[i].n_node.selected;
