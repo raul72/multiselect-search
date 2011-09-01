@@ -11,7 +11,8 @@
 		cmd_key_down = false,
 		initialized = false,
 		last_match,
-		last_regexp;
+		last_regexp,
+		default_settings;
 
 	function match(searchterm, item) {
 		if (last_match != searchterm) {
@@ -61,6 +62,32 @@
 		});
 	}
 
+	default_settings = {
+		match: match,
+		searchbox_class: null,	
+		container_id: null,	
+		container_class: null,	
+		onchange: null	
+	};
+
+	function config_merge(old, newc) {
+		var i, out = {};
+		for (i in old) {
+			if (old.hasOwnProperty(i)) {
+				if (typeof newc[i] === 'undefined') {
+					out[i] = old[i];
+				} else {
+					out[i] = newc[i];
+				}
+			}		
+		}
+		return out;
+	}
+
+	window.multiselect_search_defaults = function(settings) {
+		default_settings = config_merge(default_settings, settings);
+	}
+
 	window.multiselect_search = function (ob, settings) {
 		if (!ob || !ob.nodeName || ob.nodeName.toString().toLowerCase() !== 'select' || !ob.multiple) {
 			// do nothing if given element isn't multiple select
@@ -73,7 +100,7 @@
 		}
 
 		settings = settings || {};
-		settings.match = settings.match || match;
+		settings = config_merge(default_settings, settings);
 
 		function get_list(ob) {
 			var i,
