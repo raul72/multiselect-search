@@ -11,6 +11,15 @@
 	</style>
 	<script type="text/javascript">
 	window.onload = function(){
+		function show_selected_values() {
+			var vals = mss.get_selected_values();
+			if (vals.length) {
+				selected_values.innerHTML = 'Selected items: ' + vals.join(', ');
+			} else {
+				selected_values.innerHTML = 'no items selected';
+			}
+		}	
+
 		var selected_values = document.getElementById('selected_values'),
 			conf = {
 				// class name for the input where you search
@@ -18,22 +27,17 @@
 				// id for the div containing the select and the searchbox
 				container_id: 'example_id',
 				// class name for the same div
-				container_class: 'example_class'
+				container_class: 'example_class',
 				// function that checks if item name matches searchterm 
 				// match: function(searchterm, item) {return !!item.match(new RegExp(searchterm));}
+				onchange: show_selected_values
 			},
-			ms = multiselect_search(document.getElementById('example'), conf);
+			mss = multiselect_search(document.getElementById('example'), conf);
 
-		function show_selected_values() {
-			var vals = ms.get_selected_values();
-			if (vals.length) {
-				selected_values.innerHTML = 'Selected items: ' + vals.join(', ');
-			} else {
-				selected_values.innerHTML = 'no items selected';
+			if (!mss) {
+				return;
 			}
-		}
-		show_selected_values();
-		ms.onchange = show_selected_values;
+			show_selected_values();
 	};
 	</script>
 </head>

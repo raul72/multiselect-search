@@ -182,8 +182,8 @@
 					}
 				}
 			}
-			if (instance.onchange) {
-				instance.onchange();
+			if (settings.onchange) {
+				settings.onchange();
 			}
 		});
 
