@@ -201,6 +201,10 @@
 		insertafter(div, ob);
 
 		instance.get_selected_values = get_selected_values;
+		instance.container_node = div;
+		instance.searchbox_node = searchbox;
+		instance.select_node = select;
+		
 		return instance;
 	}
 })();
