@@ -5,23 +5,45 @@
 	<script type="text/javascript" src="multiselect_search.js"></script>
 	<script type="text/javascript">
 	window.onload = function(){
+		function show_selected_values() {
+			var vals = mss.get_selected_values(),
+				i;
+
+			if (!vals.length) {
+				selected_values.innerHTML = 'no items selected';
+				return;
+			}
+
+			var msg = 'Selected items:';
+			for (i = 0; i < vals.length; i++) {
+				msg +=  ' ' + vals[i];
+				if (i && i + 1 < vals.length) {
+					msg += ',';
+				}
+				if (i % 5 == 1) {
+					msg += '<br>';
+				}
+			}
+			selected_values.innerHTML = msg;
+
+		}	
 
 		var mss,
-			conf = {};
-		
-		// class name for the input where you search
-		// conf.searchbox_class = '';
-		
-		// id for the div containing the select and the searchbox
-		// conf.container_id = 'example_id';
+			conf = {
+				onchange: show_selected_values
+			},
+			selected_values;
 
-		// class name for the same div
-		// conf.container_class = 'example_class';
+		mss = multiselect_search(document.getElementById('example'), conf);
 
-		// function that checks if item name matches searchterm 
-		// conf.match = function(searchterm, item) {return !!item.match(new RegExp(searchterm));};
+		if (!mss) {
+			return;
+		}
 
-		multiselect_search(document.getElementById('example'), conf);
+		selected_values = document.createElement('div');
+		mss.container_node.appendChild(selected_values);
+
+		show_selected_values();
 	};
 	</script>
 </head>
