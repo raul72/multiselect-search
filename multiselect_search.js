@@ -67,7 +67,8 @@
 		searchbox_class: null,	
 		container_id: null,	
 		container_class: null,	
-		onchange: null	
+		onchange: null,
+		inherit_size: true	
 	};
 
 	function config_merge(old, newc) {
@@ -187,6 +188,11 @@
 			searchbox.className = settings.searchbox_class;
 		}
 		addEventSimple(searchbox, 'keyup', search);
+
+		if (settings.inherit_size) {
+			select.style.width = parseInt(ob.offsetWidth, 10) + 'px'; 
+			select.style.height = parseInt(ob.offsetHeight, 10) + 'px'; 
+		}
 
 		select.multiple = true;
 		if (ob.className) {

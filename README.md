@@ -37,7 +37,9 @@ NOTE: Any and all config parameters are optional!
  * **onchange** - function that will be executed every time `change` event is triggered for select element
    * type: function
    * default value: none
-
+ * **inherit_size** - if set `true` original multiselect offset{Width,Height} will be set as duplicated multiselect width,height
+   * type:  boolean
+   * default value: true   
 
 ## return value
 if given object is not multiselect then return value is `false`
@@ -45,4 +47,7 @@ if given object is not multiselect then return value is `false`
 otherwise return value is object with follwing keys:
  
  * **get_selected_values** - functions that returns selected options names (option innerHTML) as array
+ * **container_node** - dom element container div
+ * **searchbox_node** - dom element searchbox
+ * **select_node** - dom element multiselect (the duplicated one that search changes)
 
