@@ -54,3 +54,4 @@ otherwise return value is object with follwing keys:
  * **container_node** - dom element container div
  * **searchbox_node** - dom element searchbox
  * **select_node** - dom element multiselect (the duplicated one that search changes)
+ * **search** - function - if you externaly widh to execute search - function param is searchterm 

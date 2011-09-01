@@ -242,6 +242,7 @@
 		instance.container_node = div;
 		instance.searchbox_node = searchbox;
 		instance.select_node = select;
+		instance.search = search;
 		
 		return instance;
 	}
