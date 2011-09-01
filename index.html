@@ -20,24 +20,31 @@
 			}
 		}	
 
-		var selected_values = document.getElementById('selected_values'),
-			conf = {
-				// class name for the input where you search
-				searchbox_class: '',
-				// id for the div containing the select and the searchbox
-				container_id: 'example_id',
-				// class name for the same div
-				container_class: 'example_class',
-				// function that checks if item name matches searchterm 
-				// match: function(searchterm, item) {return !!item.match(new RegExp(searchterm));}
-				onchange: show_selected_values
-			},
-			mss = multiselect_search(document.getElementById('example'), conf);
+		var mss,
+			conf = {},
+			selected_values = document.getElementById('selected_values');
+		
+		// class name for the input where you search
+		// conf.searchbox_class = '';
+		
+		// id for the div containing the select and the searchbox
+		// conf.container_id = 'example_id';
 
-			if (!mss) {
-				return;
-			}
-			show_selected_values();
+		// class name for the same div
+		// conf.container_class = 'example_class';
+
+		// function that checks if item name matches searchterm 
+		// conf.match = function(searchterm, item) {return !!item.match(new RegExp(searchterm));};
+
+		conf.onchange = show_selected_values;
+
+		mss = multiselect_search(document.getElementById('example'), conf);
+
+		if (!mss) {
+			return;
+		}
+		show_selected_values();
+
 	};
 	</script>
 </head>
