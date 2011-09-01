@@ -68,7 +68,8 @@
 		container_id: null,	
 		container_class: null,	
 		onchange: null,
-		inherit_size: true	
+		inherit_size: true,
+		searchbox: null
 	};
 
 	function config_merge(old, newc) {
@@ -136,7 +137,7 @@
 			// container div for multiselect_search
 			div = document.createElement('div'),
 			// the input area to search select options
-			searchbox = document.createElement('input'),
+			searchbox,
 			// new select where we add/remove options form
 			select = document.createElement('select'),
 			last_search = '',
@@ -153,11 +154,9 @@
 			return r;
 		}
 
-		function search() {
-			// NOTE: don't use "this" as for IE this is window for others input element
-			var term = searchbox.value,
-				i,
-				last_node = null;
+		function search(term) {
+			term = term || '';
+			var	i, last_node = null;
 			if (term === last_search) {
 				return;
 			}
@@ -183,11 +182,18 @@
 			}
 		}
 
-		searchbox.type = 'text';
-		if (settings.searchbox_class) {
-			searchbox.className = settings.searchbox_class;
+		if (settings.searchbox) {
+			addEventSimple(settings.searchbox, 'keyup', function(){search(settings.searchbox.value);});
+		} else {
+			searchbox = document.createElement('input');
+			searchbox.type = 'text';
+			if (settings.searchbox_class) {
+				searchbox.className = settings.searchbox_class;
+			}
+			div.appendChild(searchbox);
+			div.appendChild(document.createElement('br'));
+			addEventSimple(searchbox, 'keyup', function(){search(searchbox.value);});
 		}
-		addEventSimple(searchbox, 'keyup', search);
 
 		if (settings.inherit_size) {
 			select.style.width = parseInt(ob.offsetWidth, 10) + 'px'; 
@@ -226,8 +232,7 @@
 		if (settings.container_class) {
 			div.className = settings.container_class;
 		}
-		div.appendChild(searchbox);
-		div.appendChild(document.createElement('br'));
+		
 		div.appendChild(select);
 
 		ob.style.display = 'none';

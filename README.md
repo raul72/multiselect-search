@@ -39,7 +39,11 @@ NOTE: Any and all config parameters are optional!
    * default value: none
  * **inherit_size** - if set `true` original multiselect offset{Width,Height} will be set as duplicated multiselect width,height
    * type:  boolean
-   * default value: true   
+   * default value: true
+ * **searchbox** - Dom element to what the search action will be attached to instead of creating a new input field
+   * type: dom element
+   * default: none
+   * NOTE: if set will void config param `searchbox_class`  
 
 ## return value
 if given object is not multiselect then return value is `false`
@@ -50,4 +54,3 @@ otherwise return value is object with follwing keys:
  * **container_node** - dom element container div
  * **searchbox_node** - dom element searchbox
  * **select_node** - dom element multiselect (the duplicated one that search changes)
-
