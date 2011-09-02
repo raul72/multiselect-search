@@ -134,12 +134,9 @@
 		}
 
 		var list = get_list(ob),
-			// container div for multiselect_search
-			div = document.createElement('div'),
-			// the input area to search select options
+			div,
 			searchbox,
-			// new select where we add/remove options form
-			select = document.createElement('select'),
+			select,
 			last_search = '',
 			i,
 			instance = {};
@@ -182,6 +179,16 @@
 			}
 		}
 
+		// container div
+		div = document.createElement('div');
+		if (settings.container_id) {
+			div.id = settings.container_id;
+		}
+		if (settings.container_class) {
+			div.className = settings.container_class;
+		}
+
+		// searchbox
 		if (settings.searchbox) {
 			addEventSimple(settings.searchbox, 'keyup', function(){search(settings.searchbox.value);});
 		} else {
@@ -195,12 +202,16 @@
 			addEventSimple(searchbox, 'keyup', function(){search(searchbox.value);});
 		}
 
+
+		// duplicated multiselect
+		select = document.createElement('select');
+		select.multiple = true;
+
 		if (settings.inherit_size) {
 			select.style.width = parseInt(ob.offsetWidth, 10) + 'px'; 
 			select.style.height = parseInt(ob.offsetHeight, 10) + 'px'; 
 		}
 
-		select.multiple = true;
 		if (ob.className) {
 			select.className = ob.className;
 		}
@@ -226,13 +237,6 @@
 			}
 		});
 
-		if (settings.container_id) {
-			div.id = settings.container_id;
-		}
-		if (settings.container_class) {
-			div.className = settings.container_class;
-		}
-		
 		div.appendChild(select);
 
 		ob.style.display = 'none';
