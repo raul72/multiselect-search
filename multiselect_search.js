@@ -190,7 +190,7 @@
 
 		// searchbox
 		if (settings.searchbox) {
-			addEventSimple(settings.searchbox, 'keyup', function(){search(settings.searchbox.value);});
+			searchbox = settings.searchbox;
 		} else {
 			searchbox = document.createElement('input');
 			searchbox.type = 'text';
@@ -199,8 +199,16 @@
 			}
 			div.appendChild(searchbox);
 			div.appendChild(document.createElement('br'));
-			addEventSimple(searchbox, 'keyup', function(){search(searchbox.value);});
 		}
+
+		addEventSimple(searchbox, 'keyup', function(){search(searchbox.value);});
+		// NOTE: paste event doesn't work in Opera and FF < 3.0
+		// http://www.quirksmode.org/dom/events/cutcopypaste.html#t03
+		addEventSimple(searchbox, 'paste', function(){
+			// paste event is executed before the text is pasted
+			// but seems that 50ms timeout is enough
+			setTimeout(function(){search(searchbox.value);}, 50);
+		});
 
 
 		// duplicated multiselect
