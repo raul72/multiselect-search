@@ -177,6 +177,7 @@
 					}
 				}
 			}
+			select.scrollTop = 0;
 		}
 
 		// container div
