@@ -40,6 +40,9 @@ NOTE: Any and all config parameters are optional!
  * **inherit_size** - if set `true` original multiselect offset{Width,Height} will be set as duplicated multiselect width,height
    * type:  boolean
    * default value: true
+ * **delay** - delay between last keyup and when search is executed
+   * type: int
+   * default: 200
  * **searchbox** - Dom element to what the search action will be attached to instead of creating a new input field
    * type: dom element
    * default: none

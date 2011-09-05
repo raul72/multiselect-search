@@ -69,7 +69,8 @@
 		container_class: null,	
 		onchange: null,
 		inherit_size: true,
-		searchbox: null
+		searchbox: null,
+		delay: 200
 	};
 
 	function config_merge(old, newc) {
@@ -139,7 +140,8 @@
 			select,
 			last_search = '',
 			i,
-			instance = {};
+			instance = {},
+			timeout;
 
 		function get_selected_values() {
 			var r = [], i;
@@ -152,6 +154,11 @@
 		}
 
 		function search(term) {
+			clearTimeout(timeout);
+			timeout = setTimeout(function(){__search(term);}, settings.delay);
+		}
+
+		function __search(term) {
 			term = term || '';
 			var	i, last_node = null;
 			if (term === last_search) {
@@ -205,11 +212,7 @@
 		addEventSimple(searchbox, 'keyup', function(){search(searchbox.value);});
 		// NOTE: paste event doesn't work in Opera and FF < 3.0
 		// http://www.quirksmode.org/dom/events/cutcopypaste.html#t03
-		addEventSimple(searchbox, 'paste', function(){
-			// paste event is executed before the text is pasted
-			// but seems that 50ms timeout is enough
-			setTimeout(function(){search(searchbox.value);}, 50);
-		});
+		addEventSimple(searchbox, 'paste', function(){search(searchbox.value);});
 
 
 		// duplicated multiselect
