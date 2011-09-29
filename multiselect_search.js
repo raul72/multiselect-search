@@ -123,12 +123,9 @@
 					visible: true
 				};
 			}
-			for (i in cnodes) {
-				// NOTE: For IE there is no hasOwnProperty method for childNodes
-				if (!cnodes.hasOwnProperty || cnodes.hasOwnProperty(i)) {
-					if (cnodes[i].nodeName && cnodes[i].nodeName.toString().toLowerCase() === 'option') {
-						list[list.length] = new_list_element(cnodes[i]);
-					}
+			for (i = 0; i < cnodes.length; i++) {
+				if (cnodes[i].nodeName && cnodes[i].nodeName.toString().toLowerCase() === 'option') {
+					list[list.length] = new_list_element(cnodes[i]);
 				}
 			}
 			return list;
