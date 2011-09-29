@@ -1,3 +1,8 @@
+## WARNING!
+This project is still in its early stages, therefor anything and everything can change at this time.
+
+Wait for a first release before you use it somewhere.
+
 ## About
 Check out the demo: http://nofish.eu/code/multiselect_search/
 
