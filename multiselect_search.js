@@ -89,7 +89,7 @@
 
 	window.multiselect_search_defaults = function(settings) {
 		default_settings = config_merge(default_settings, settings);
-	}
+	};
 
 	window.multiselect_search = function (ob, settings) {
 		if (!ob || !ob.nodeName || ob.nodeName.toString().toLowerCase() !== 'select' || !ob.multiple) {
@@ -230,11 +230,11 @@
 			}
 		}
 
-		addEventSimple(select, 'change', function (e) {
+		addEventSimple(select, 'change', function () {
 			var i;
 			for (i in list) {
 				if (list.hasOwnProperty(i)) {
-					if (!(ctrl_key_down || cmd_key_down) && list[i].visible == false) {
+					if (!(ctrl_key_down || cmd_key_down) && !list[i].visible) {
 						list[i].o_node.selected = list[i].n_node.selected = false;
 					} else {
 						list[i].o_node.selected = list[i].n_node.selected;
