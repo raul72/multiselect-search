@@ -58,8 +58,11 @@ if given object is not multiselect then return value is `false`
 
 otherwise return value is object with follwing keys:
  
- * **get_selected_values** - functions that returns selected options names (option innerHTML) as array
+ * **get_selected** - functions that returns selected options as objects in array, object keys are:
+   * **text** - option name (option innerHTML)
+   * **changeState** method to change selected status (true - select, false - deselect)
+ * **get_selected_values** - (deprecated) functions that returns selected options names (option innerHTML) as array
  * **container_node** - dom element container div
  * **searchbox_node** - dom element searchbox
  * **select_node** - dom element multiselect (the duplicated one that search changes)
- * **search** - function - if you externaly wish to execute search - function param is searchterm 
+ * **search** - function - if you externaly wish to execute search - function param is searchterm

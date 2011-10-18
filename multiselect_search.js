@@ -7,9 +7,7 @@
  * http://www.gnu.org/licenses/gpl.html
  */
 (function(){
-	var ctrl_key_down = false,
-		cmd_key_down = false,
-		initialized = false,
+	var reg_space = /\s+/,
 		last_match,
 		last_regexp,
 		default_settings;
@@ -40,37 +38,31 @@
 		}
 	}
 
-	function init() {
-		// mark ctrl key as either up or down
-		addEventSimple(document, 'keydown', function (e) {
-			var k = e.keyCode || e.which;
-			if (k === 17) {
-				ctrl_key_down = true;
+	function removeClass(ob, className) {
+		if (!ob || !ob.className) {
+			return;
+		}
+		var c = (ob.className || "").split(reg_space),
+			nc = [],
+			i;
+		for (i = 0; i < c.length; i++) {
+			if (c[i] != className) {
+				nc.push(c[i]);
 			}
-			if (k === 91) {
-				cmd_key_down = true;
-			}
-		});
-		addEventSimple(document, 'keyup', function (e) {
-			var k = e.keyCode || e.which;
-			if (k === 17) {
-				ctrl_key_down = false;
-			}
-			if (k === 91) {
-				cmd_key_down = false;
-			}
-		});
+		}
+		ob.className = nc.join(' ');
 	}
 
 	default_settings = {
 		match: match,
-		searchbox_class: null,	
-		container_id: null,	
-		container_class: null,	
+		searchbox_class: null,
+		container_id: null,
+		container_class: null,
 		onchange: null,
 		inherit_size: true,
 		searchbox: null,
-		delay: 200
+		delay: 200,
+		option_class: 'mss_option'
 	};
 
 	function config_merge(old, newc) {
@@ -82,7 +74,7 @@
 				} else {
 					out[i] = newc[i];
 				}
-			}		
+			}
 		}
 		return out;
 	}
@@ -97,11 +89,6 @@
 			return false;
 		}
 
-		if (!initialized) {
-			init();
-			initialized = true;
-		}
-
 		settings = settings || {};
 		settings = config_merge(default_settings, settings);
 
@@ -111,21 +98,46 @@
 				list = [];
 			function new_list_element(node) {
 				var text = cnodes[i].innerHTML,
-					new_node = document.createElement('option');
+					new_node = document.createElement('div');
+
+				function changeState(to) {
+                    to = to !== false;
+					if (to) {
+						node.selected = true;
+						new_node.className = new_node.className + ' selected';
+					} else {
+						removeClass(new_node, 'selected');
+						node.selected = false;
+					}
+					if (settings.onchange) {
+						settings.onchange();
+					}
+				}
 
 				new_node.innerHTML = text;
-				new_node.selected = node.selected;
-
+				new_node.className = settings.option_class + (node.selected ? ' selected' : '');
+				new_node.onclick = function() {
+					if (node.selected) {
+						changeState(false);
+					} else {
+						changeState(true);
+					}
+				};
 				return {
 					text: text,
 					o_node: node,
 					n_node: new_node,
-					visible: true
+					visible: true,
+					changeState: changeState
 				};
 			}
-			for (i = 0; i < cnodes.length; i++) {
-				if (cnodes[i].nodeName && cnodes[i].nodeName.toString().toLowerCase() === 'option') {
-					list[list.length] = new_list_element(cnodes[i]);
+			for (i in cnodes) {
+				// NOTE: For IE there is no hasOwnProperty method for childNodes
+				// TODO: optgroup
+				if (!cnodes.hasOwnProperty || cnodes.hasOwnProperty(i)) {
+					if (cnodes[i].nodeName && cnodes[i].nodeName.toString().toLowerCase() === 'option') {
+						list[list.length] = new_list_element(cnodes[i]);
+					}
 				}
 			}
 			return list;
@@ -140,11 +152,14 @@
 			instance = {},
 			timeout;
 
-		function get_selected_values() {
+		function get_selected() {
 			var r = [], i;
 			for (i in list) {
 				if (list.hasOwnProperty(i) && list[i].o_node.selected) {
-					r[r.length] = list[i].text;
+					r[r.length] = {
+						text: list[i].text,
+						changeState: list[i].changeState
+					};
 				}
 			}
 			return r;
@@ -157,26 +172,43 @@
 
 		function __search(term) {
 			term = term || '';
-			var	i, last_node = null;
+			var	i;
 			if (term === last_search) {
 				return;
 			}
 			last_search = term;
 
+
+/* - :selected
+			if (term == ':selected') {
+				for (i in list) {
+					if (list.hasOwnProperty(i)) {
+						if (list[i].o_node.selected) {
+							if (!list[i].visible) {
+								list[i].n_node.style.display = 'block';
+							}
+							list[i].visible = true;
+						} else if (list[i].visible) {
+							list[i].n_node.style.display = 'none';
+							list[i].visible = false;
+						}
+					}
+				}
+				select.scrollTop = 0;
+				return;
+			}
+*/
+
+
 			for (i in list) {
 				if (list.hasOwnProperty(i)) {
 					if (!term || settings.match(term, list[i].text)) {
 						if (!list[i].visible) {
-							if (last_node === null) {
-								select.insertBefore(list[i].n_node, select.firstChild);
-							} else {
-								insertafter(list[i].n_node, last_node)
-							}
+							list[i].n_node.style.display = 'block';
 						}
 						list[i].visible = true;
-						last_node = list[i].n_node;
 					} else if (list[i].visible) {
-						select.removeChild(list[i].n_node);
+						list[i].n_node.style.display = 'none';
 						list[i].visible = false;
 					}
 				}
@@ -213,12 +245,11 @@
 
 
 		// duplicated multiselect
-		select = document.createElement('select');
-		select.multiple = true;
+		select = document.createElement('div');
 
 		if (settings.inherit_size) {
-			select.style.width = parseInt(ob.offsetWidth, 10) + 'px'; 
-			select.style.height = parseInt(ob.offsetHeight, 10) + 'px'; 
+			select.style.width = parseInt(ob.offsetWidth, 10) + 'px';
+			select.style.height = parseInt(ob.offsetHeight, 10) + 'px';
 		}
 
 		if (ob.className) {
@@ -230,33 +261,25 @@
 			}
 		}
 
-		addEventSimple(select, 'change', function () {
-			var i;
-			for (i in list) {
-				if (list.hasOwnProperty(i)) {
-					if (!(ctrl_key_down || cmd_key_down) && !list[i].visible) {
-						list[i].o_node.selected = list[i].n_node.selected = false;
-					} else {
-						list[i].o_node.selected = list[i].n_node.selected;
-					}
-				}
-			}
-			if (settings.onchange) {
-				settings.onchange();
-			}
-		});
-
 		div.appendChild(select);
 
-		ob.style.display = 'none';
+		//ob.style.display = 'none';
 		insertafter(div, ob);
 
-		instance.get_selected_values = get_selected_values;
+		instance.get_selected = get_selected;
+		instance.get_selected_values = function() {
+			// legacy
+			var list = get_selected(), vals = [], i;
+			for (i = 0; i < list.length; i++) {
+				vals[i] = list[i].text;
+			}
+			return vals;
+		};
 		instance.container_node = div;
 		instance.searchbox_node = searchbox;
 		instance.select_node = select;
 		instance.search = search;
-		
+
 		return instance;
 	}
 })();

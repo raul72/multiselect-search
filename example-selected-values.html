@@ -3,6 +3,23 @@
 <head>
 	<title>Multiselect search</title>
 	<script type="text/javascript" src="multiselect_search.js"></script>
+	<style type="text/css">
+	.mss .mss_option {
+		border-bottom: 1px solid silver;
+	}
+	div.mss {
+		border: 1px solid silver;
+		width: 200px;
+		height: 200px;
+		overflow: auto;
+		overflow-x: hidden;
+		overflow-y: scroll;
+	}
+	.mss .selected {
+		background-color: #457;
+		color: #fff;
+	}
+	</style>
 	<script type="text/javascript">
 	window.onload = function(){
 		function show_selected_values() {
@@ -46,7 +63,7 @@
 </head>
 <body>
 <form>
-<select multiple size="11" id="example" name="example" class="multiselect">
+<select multiple size="11" id="example" name="example" class="mss">
 	<option value="africa_abidjan">Africa - Abidjan</option>
 	<option value="africa_accra">Africa - Accra</option>
 	<option value="africa_addis_ababa">Africa - Addis Ababa</option>
@@ -455,7 +472,6 @@
 	<option value="pacific_wallis">Pacific - Wallis</option>
 	<option value="utc">UTC</option>
 </select>
-<small>Hold down CTRL to select multiple values</small>
 <br>
 <input type="submit">
 </form>
