@@ -18,11 +18,13 @@ With default config settings:
 
  * container div is created and children appended:
    * **search** - is text input where you can search for an option
-   * **select** - is a duplicated multiselect where options are added/removed based on the search value
-   * NOTE: neither **search** or **select** have a name therefor they are not posted with the form.
+   * **select** - a div representing the select tag inside what there is a div per every option. These are shown and hidden based on the searchterm
+   * NOTE: **search** doesn't have a name therefor it is not posted with the form.
  * the container div is inserted into the dom tree after the original multiselect
  * the original mutliselect is hidden with CSS `display: none`
- * when selecting/deselecting option in the duplicated multiselect the option selected status is changed in the original multiselect too.
+ * when clicking on an option div:
+   * if the option was not selected class `selected` will be removed from the div and the option in original multiselect is marked as deselected
+   * if the option was selected class `selected` will be added to the div and the option in original multiselect is marked as selected
 
 ## Config
 NOTE: Any and all config parameters are optional!
@@ -51,12 +53,19 @@ NOTE: Any and all config parameters are optional!
  * **searchbox** - Dom element to what the search action will be attached to instead of creating a new input field
    * type: dom element
    * default: none
-   * NOTE: if set will void config param `searchbox_class`  
+   * NOTE: if set will void config param `searchbox_class`
+ * **select_class** - class name of the div containing the option divs
+   * type: string
+   * default value: none
+   * NOTE: if not set then className is inherited from the original multiselect
+ * **option_class** - class for the option div
+   * type: string
+   * default value: mss_option
 
 ## return value
 if given object is not multiselect then return value is `false`
 
-otherwise return value is object with follwing keys:
+otherwise return value is object with following keys:
  
  * **get_selected** - functions that returns selected options as objects in array, object keys are:
    * **text** - option name (option innerHTML)
@@ -65,4 +74,4 @@ otherwise return value is object with follwing keys:
  * **container_node** - dom element container div
  * **searchbox_node** - dom element searchbox
  * **select_node** - dom element multiselect (the duplicated one that search changes)
- * **search** - function - if you externaly wish to execute search - function param is searchterm
+ * **search** - function - if you externally wish to execute search - function param is searchterm

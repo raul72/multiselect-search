@@ -62,6 +62,7 @@
 		inherit_size: true,
 		searchbox: null,
 		delay: 200,
+		select_class: '',
 		option_class: 'mss_option'
 	};
 
@@ -101,7 +102,7 @@
 					new_node = document.createElement('div');
 
 				function changeState(to) {
-                    to = to !== false;
+					to = to !== false;
 					if (to) {
 						node.selected = true;
 						new_node.className = new_node.className + ' selected';
@@ -178,7 +179,6 @@
 			}
 			last_search = term;
 
-
 /* - :selected
 			if (term == ':selected') {
 				for (i in list) {
@@ -198,7 +198,6 @@
 				return;
 			}
 */
-
 
 			for (i in list) {
 				if (list.hasOwnProperty(i)) {
@@ -252,7 +251,9 @@
 			select.style.height = parseInt(ob.offsetHeight, 10) + 'px';
 		}
 
-		if (ob.className) {
+		if (settings.select_class) {
+			select.className = settings.select_class;
+		} else if (ob.className) {
 			select.className = ob.className;
 		}
 		for (i in list) {
