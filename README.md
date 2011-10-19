@@ -45,7 +45,7 @@ NOTE: Any and all config parameters are optional!
  * **match** - function that checks if item name matches searchterm
    * type: function
      * params: searchterm, itemName
-     * return value ture item should be shown; false if not
+     * return value true if item should be shown; false if not
    * default value: case-insensitive regular expression
  * **onchange** - function that will be executed every time an option selected status is changed
    * type: function
