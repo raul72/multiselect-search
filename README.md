@@ -67,6 +67,8 @@ NOTE: Any and all config parameters are optional!
  * **option_class** - class for the option div
    * type: string
    * default value: mss_option
+ * **changeState** - change selected state of all visible options (true - select, false - deselect)
+   * type function
 
 ## return value
 if given object is not multiselect then return value is `false`

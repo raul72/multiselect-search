@@ -304,6 +304,14 @@
 		instance.searchbox_node = searchbox;
 		instance.select_node = select;
 		instance.search = search;
+		instance.changeState = function(to) {
+			var i;
+			for (i = 0; i < list.length; i++) {
+				if (list[i].visible) {
+					list[i].changeState(to);
+				}
+			}
+		};
 
 		return instance;
 	}
