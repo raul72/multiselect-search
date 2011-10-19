@@ -13,6 +13,10 @@ Check out the demo: http://nofish.eu/code/multiselect_search/
 * config is object with what you can cahnge the behavior of multiselect search
   * NOTE: config is optional.
 
+## TODO
+ * if input contains `optgroup`
+ * method to get full list (e.g select all button)
+
 ## Workflow
 With default config settings:
 
@@ -40,8 +44,10 @@ NOTE: Any and all config parameters are optional!
    * default value: none 
  * **match** - function that checks if item name matches searchterm
    * type: function
+     * params: searchterm, itemName
+     * return value ture item should be shown; false if not
    * default value: case-insensitive regular expression
- * **onchange** - function that will be executed every time `change` event is triggered for select element
+ * **onchange** - function that will be executed every time an option selected status is changed
    * type: function
    * default value: none
  * **inherit_size** - if set `true` original multiselect offset{Width,Height} will be set as duplicated multiselect width,height
@@ -73,5 +79,5 @@ otherwise return value is object with following keys:
  * **get_selected_values** - (deprecated) functions that returns selected options names (option innerHTML) as array
  * **container_node** - dom element container div
  * **searchbox_node** - dom element searchbox
- * **select_node** - dom element multiselect (the duplicated one that search changes)
+ * **select_node** - dom element div that represents the select tag (contains divs that represent option tags)
  * **search** - function - if you externally wish to execute search - function param is searchterm

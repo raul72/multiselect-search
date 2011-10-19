@@ -134,7 +134,6 @@
 			}
 			for (i in cnodes) {
 				// NOTE: For IE there is no hasOwnProperty method for childNodes
-				// TODO: optgroup
 				if (!cnodes.hasOwnProperty || cnodes.hasOwnProperty(i)) {
 					if (cnodes[i].nodeName && cnodes[i].nodeName.toString().toLowerCase() === 'option') {
 						list[list.length] = new_list_element(cnodes[i]);
@@ -264,7 +263,7 @@
 
 		div.appendChild(select);
 
-		//ob.style.display = 'none';
+		ob.style.display = 'none';
 		insertafter(div, ob);
 
 		instance.get_selected = get_selected;
