@@ -85,6 +85,8 @@
 	};
 
 	window.multiselect_search = function (ob, settings) {
+		var last_clicked = null;
+
 		if (!ob || !ob.nodeName || ob.nodeName.toString().toLowerCase() !== 'select' || !ob.multiple) {
 			// do nothing if given element isn't multiple select
 			return false;
@@ -93,11 +95,23 @@
 		settings = settings || {};
 		settings = config_merge(default_settings, settings);
 
+		function shiftclick(s, e) {
+			if (s > e) {
+				return;
+			}
+			var i;
+			for (i = s; i <= e; i++) {
+				if (list[i].visible) {
+					list[i].changeState(true);
+				}
+			}
+		}
+
 		function get_list(ob) {
 			var i,
 				cnodes = ob.childNodes,
 				list = [];
-			function new_list_element(node) {
+			function new_list_element(node, uid) {
 				var text = cnodes[i].innerHTML,
 					new_node = document.createElement('div');
 
@@ -116,15 +130,26 @@
 				}
 
 				new_node.innerHTML = text;
+				new_node.unselectable = 'on';
 				new_node.className = settings.option_class + (node.selected ? ' selected' : '');
-				new_node.onclick = function() {
+				new_node.onclick = function(e) {
+					e = e || window.event;
 					if (node.selected) {
 						changeState(false);
 					} else {
 						changeState(true);
 					}
+					if (e.shiftKey && last_clicked !== null) {
+						if (uid < last_clicked) {
+							shiftclick(uid, last_clicked);
+						} else {
+							shiftclick(last_clicked, uid);
+						}
+					}
+					last_clicked = uid;
 				};
 				return {
+					uid: uid,
 					text: text,
 					o_node: node,
 					n_node: new_node,
@@ -136,7 +161,7 @@
 				// NOTE: For IE there is no hasOwnProperty method for childNodes
 				if (!cnodes.hasOwnProperty || cnodes.hasOwnProperty(i)) {
 					if (cnodes[i].nodeName && cnodes[i].nodeName.toString().toLowerCase() === 'option') {
-						list[list.length] = new_list_element(cnodes[i]);
+						list[list.length] = new_list_element(cnodes[i], list.length);
 					}
 				}
 			}
@@ -263,7 +288,7 @@
 
 		div.appendChild(select);
 
-		ob.style.display = 'none';
+		//ob.style.display = 'none';
 		insertafter(div, ob);
 
 		instance.get_selected = get_selected;
