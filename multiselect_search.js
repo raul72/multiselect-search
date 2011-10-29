@@ -104,7 +104,7 @@
 			var i;
 			for (i = s; i <= e; i++) {
 				if (list[i].visible) {
-					list[i].changeState(true);
+					list[i].changeState(true, false);
 				}
 			}
 		}
@@ -117,8 +117,9 @@
 				var text = cnodes[i].innerHTML,
 					new_node = document.createElement('div');
 
-				function changeState(to) {
+				function changeState(to, triggerEvent) {
 					to = to !== false;
+					triggerEvent = triggerEvent !== false;
 					if (to) {
 						node.selected = true;
 						new_node.className = new_node.className + ' selected';
@@ -126,8 +127,10 @@
 						removeClass(new_node, 'selected');
 						node.selected = false;
 					}
-					if (settings.onchange) {
-						settings.onchange();
+					if (triggerEvent) {
+						if (settings.onchange) {
+							settings.onchange();
+						}
 					}
 				}
 
@@ -137,9 +140,9 @@
 				new_node.onclick = function(e) {
 					e = e || window.event;
 					if (node.selected) {
-						changeState(false);
+						changeState(false, false);
 					} else {
-						changeState(true);
+						changeState(true, false);
 					}
 					if (e.shiftKey && last_clicked !== null) {
 						if (uid < last_clicked) {
@@ -149,6 +152,9 @@
 						}
 					}
 					last_clicked = uid;
+					if (settings.onchange) {
+						settings.onchange();
+					}
 				};
 				return {
 					uid: uid,
