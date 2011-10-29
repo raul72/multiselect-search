@@ -34,7 +34,9 @@
 		if (obj.addEventListener) {
 			obj.addEventListener(evt, fn, false);
 		} else if (obj.attachEvent) {
-			obj.attachEvent('on' + evt, fn);
+			obj.attachEvent('on' + evt, function(){
+				fn.call(obj, window.event);
+			});
 		}
 	}
 
