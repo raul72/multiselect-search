@@ -85,3 +85,4 @@ otherwise return value is object with following keys:
  * **searchbox_node** - dom element searchbox
  * **select_node** - dom element div that represents the select tag (contains divs that represent option tags)
  * **search** - function - if you externally wish to execute search - function param is searchterm
+ * **changeState** - function - changes selected status for all visible options
