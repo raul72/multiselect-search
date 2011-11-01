@@ -3,12 +3,17 @@
 <head>
 	<title>Multiselect search</title>
 	<script type="text/javascript" src="multiselect_search.js"></script>
+	<!--script type="text/javascript" src="jquery.js"></script-->
 	<style type="text/css">
 	.mss .mss_option {
 		border-bottom: 1px solid silver;
 		user-select: none; /* CSS3 */
 		-moz-user-select: none; /* Gecko (Firefox) */
 		-khtml-user-select:none; /* Webkit (Safari, Chrome) */
+		font: 12px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
+	}
+	.mss .mss_option:hover {
+		cursor: pointer;
 	}
 	div.mss {
 		border: 1px solid silver;
@@ -26,7 +31,7 @@
 	<script type="text/javascript">
 	window.onload = function(){
 		function show_selected_values() {
-			var vals = mss.get_selected_values(),
+			var vals = mss.get_selected(),
 				i;
 
 			if (!vals.length) {
@@ -34,20 +39,45 @@
 				return;
 			}
 
-			var msg = 'Selected items:';
+			var link;
+
+			selected_values.innerHTML = '';
+			selected_values.appendChild(document.createTextNode('Selected items:'));
 			for (i = 0; i < vals.length; i++) {
-				msg +=  ' ' + vals[i] + (i + 1 < vals.length ? ',' : '');
+				selected_values.appendChild(document.createTextNode(' ' + vals[i].text + (i + 1 < vals.length ? ',' : '')));
+
+				selected_values.appendChild(document.createTextNode(' ('));
+				(function(elem){
+					link = document.createElement('a');
+					link.style.font = '10px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif';
+					link.style.color = '#5555ff';
+					link.href = '#';
+					link.onclick = function(e) {
+						e = e || window.event;
+						e.returnValue = false;
+						if (e.stopPropagation) {
+							e.stopPropagation();
+							e.preventDefault();
+						}
+						elem.changeState(false);
+					}
+					link.innerHTML = 'x';
+					selected_values.appendChild(link);
+				})(vals[i]);
+
+
+				selected_values.appendChild(document.createTextNode(') '));
+
 				if (i % 5 == 1) {
-					msg += '<br>';
+					selected_values.appendChild(document.createElement('br'));
 				}
 			}
-			selected_values.innerHTML = msg;
-
-		}	
+		}
 
 		var mss,
 			conf = {
-				onchange: show_selected_values
+				onchange: show_selected_values,
+				select_class: 'mss'
 			},
 			selected_values;
 
@@ -57,8 +87,74 @@
 			return;
 		}
 
+		var select_all = document.createElement('a');
+		select_all.style.font = '10px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif';
+		select_all.style.color = '#5555ff';
+		select_all.href = '#';
+		select_all.onclick = function(e) {
+			e = e || window.event;
+			e.returnValue = false;
+			if (e.stopPropagation) {
+				e.stopPropagation();
+				e.preventDefault();
+			}
+			mss.changeState(true);
+		}
+		select_all.innerHTML = 'select all';
+		mss.container_node.appendChild(select_all);
+
+		var sep = document.createElement('span');
+		sep.style.font = '10px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif';
+		sep.style.color = '#555555';
+		sep.innerHTML = '&nbsp;|&nbsp;';
+		mss.container_node.appendChild(sep);
+
+		var select_none = document.createElement('a');
+		select_none.style.font = '10px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif';
+		select_none.style.color = '#5555ff';
+		select_none.href = '#';
+		select_none.onclick = function(e) {
+			e = e || window.event;
+			e.returnValue = false;
+			if (e.stopPropagation) {
+				e.stopPropagation();
+				e.preventDefault();
+			}
+			mss.changeState(false);
+		}
+		select_none.innerHTML = 'select none';
+		mss.container_node.appendChild(select_none);
+
+// ------------------------
+		var sep = document.createElement('span');
+		sep.style.font = '10px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif';
+		sep.style.color = '#555555';
+		sep.innerHTML = '&nbsp;|&nbsp;';
+		mss.container_node.appendChild(sep);
+
+		var select_none = document.createElement('a');
+		select_none.style.font = '10px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif';
+		select_none.style.color = '#5555ff';
+		select_none.href = '#';
+		select_none.onclick = function(e) {
+			e = e || window.event;
+			e.returnValue = false;
+			if (e.stopPropagation) {
+				e.stopPropagation();
+				e.preventDefault();
+			}
+			mss.showSelected();
+		}
+		select_none.innerHTML = 'show selected';
+		mss.container_node.appendChild(select_none);
+// ------------------------
+
 		selected_values = document.createElement('div');
+		selected_values.style.font = '10px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif';
+		selected_values.style.color = '#555555';
 		mss.container_node.appendChild(selected_values);
+
+
 
 		show_selected_values();
 	};
@@ -66,7 +162,7 @@
 </head>
 <body>
 <form>
-<select multiple size="11" id="example" name="example" class="mss">
+<select multiple size="11" id="example" name="example">
 	<option value="africa_abidjan">Africa/Abidjan</option>
 	<option value="africa_accra">Africa/Accra</option>
 	<option value="africa_addis_ababa">Africa/Addis_Ababa</option>

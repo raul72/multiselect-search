@@ -159,8 +159,7 @@
 					}
 				};
 				return {
-					// NOTE: unused variable
-					// uid: uid,
+					uid: uid,
 					text: text,
 					o_node: node,
 					n_node: new_node,
@@ -206,10 +205,11 @@
 			timeout = setTimeout(function(){__search(term);}, settings.delay);
 		}
 
-		function __search(term) {
+		function __search(term, forced) {
 			term = term || '';
+			forced = forced === true;
 			var	i;
-			if (term === last_search) {
+			if (term === last_search && !forced) {
 				return;
 			}
 			last_search = term;
@@ -302,7 +302,22 @@
 			}
 		};
 		instance.showSelected = function(){
-			// TODO: this duplicates contents of __search method
+			var i, selected = [], visble = [];
+			for (i = 0; i < list.length; i++) {
+				if (list[i].o_node.selected) {
+					selected[selected.length] = list[i].uid;
+				}
+				if (list[i].visible) {
+					visble[visble.length] = list[i].uid;
+				}
+			}
+			if (selected.join() == visble.join()) {
+				// already showing selected, do search
+				__search(searchbox.value, true);
+				return;
+			}
+
+			// TODO: this largely duplicates contents of __search method
 			for (i in list) {
 				if (list.hasOwnProperty(i)) {
 					if (list[i].o_node.selected) {
