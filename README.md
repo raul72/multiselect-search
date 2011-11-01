@@ -62,7 +62,7 @@ NOTE: Any and all config parameters are optional!
    * NOTE: if set will void config param `searchbox_class`
  * **select_class** - class name of the div containing the option divs
    * type: string
-   * default value: none
+   * default value: mss
  * **option_class** - class for the option div
    * type: string
    * default value: mss_option
@@ -86,3 +86,4 @@ otherwise return value is object with following keys:
  * **select_node** - dom element div that represents the select tag (contains divs that represent option tags)
  * **search** - function - if you externally wish to execute search - function param is searchterm
  * **changeState** - function - changes selected status for all visible options
+ * **showSelected** - filters the options so that only selected options are shown

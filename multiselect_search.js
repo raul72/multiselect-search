@@ -214,26 +214,6 @@
 			}
 			last_search = term;
 
-/* - :selected
-			if (term == ':selected') {
-				for (i in list) {
-					if (list.hasOwnProperty(i)) {
-						if (list[i].o_node.selected) {
-							if (!list[i].visible) {
-								list[i].n_node.style.display = 'block';
-							}
-							list[i].visible = true;
-						} else if (list[i].visible) {
-							list[i].n_node.style.display = 'none';
-							list[i].visible = false;
-						}
-					}
-				}
-				select.scrollTop = 0;
-				return;
-			}
-*/
-
 			for (i in list) {
 				if (list.hasOwnProperty(i)) {
 					if (!term || settings.match(term, list[i].text)) {
@@ -321,7 +301,23 @@
 				}
 			}
 		};
-
+		instance.showSelected = function(){
+			// TODO: this duplicates contents of __search method
+			for (i in list) {
+				if (list.hasOwnProperty(i)) {
+					if (list[i].o_node.selected) {
+						if (!list[i].visible) {
+							list[i].n_node.style.display = 'block';
+						}
+						list[i].visible = true;
+					} else if (list[i].visible) {
+						list[i].n_node.style.display = 'none';
+						list[i].visible = false;
+					}
+				}
+			}
+			select.scrollTop = 0;
+		};
 		return instance;
 	}
 })();
