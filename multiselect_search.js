@@ -138,7 +138,7 @@
 
 				new_node.innerHTML = text;
 				new_node.unselectable = 'on';
-				new_node.className = settings.option_class + (node.selected ? '' + selected_option_class : '');
+				new_node.className = settings.option_class + (node.selected ? ' ' + selected_option_class : '');
 				new_node.onclick = function(e) {
 					e = e || window.event;
 					if (node.selected) {
