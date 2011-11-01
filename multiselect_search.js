@@ -297,8 +297,11 @@
 			var i;
 			for (i = 0; i < list.length; i++) {
 				if (list[i].visible) {
-					list[i].changeState(to);
+					list[i].changeState(to, false);
 				}
+			}
+			if (settings.onchange) {
+				settings.onchange();
 			}
 		};
 		instance.showSelected = function(){
