@@ -69,8 +69,11 @@ NOTE: Any and all config parameters are optional!
  * **selected_option_class** - added to option (div) when selected, removed when deselected
    * type: string
    * default value: selected
- * **changeState** - change selected state of all visible options (true - select, false - deselect)
+ * **changeState(to = true, [visibleOnly = false])** - change selected state of all options
    * type function
+   * params:
+     * **to** - if true options will be marked as selected, if false deselected
+     * **visibleOnly** - if set true only the options that are visible will be changed
 
 ## return value
 if given object is not multiselect then return value is `false`

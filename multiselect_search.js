@@ -293,10 +293,11 @@
 		instance.searchbox_node = searchbox;
 		instance.select_node = select;
 		instance.search = search;
-		instance.changeState = function(to) {
+		instance.changeState = function(to, visibleOnly) {
 			var i;
+			visibleOnly = visibleOnly === true;
 			for (i = 0; i < list.length; i++) {
-				if (list[i].visible) {
+				if (!visibleOnly || list[i].visible) {
 					list[i].changeState(to, false);
 				}
 			}
