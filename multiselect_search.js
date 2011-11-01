@@ -65,7 +65,8 @@
 		searchbox: null,
 		delay: 200,
 		select_class: '',
-		option_class: 'mss_option'
+		option_class: 'mss_option',
+		selected_option_class: 'selected'
 	};
 
 	function config_merge(old, newc) {
@@ -112,7 +113,8 @@
 		function get_list(ob) {
 			var i,
 				cnodes = ob.childNodes,
-				list = [];
+				list = [],
+				selected_option_class = settings.selected_option_class;
 			function new_list_element(node, uid) {
 				var text = cnodes[i].innerHTML,
 					new_node = document.createElement('div');
@@ -122,9 +124,9 @@
 					triggerEvent = triggerEvent !== false;
 					if (to) {
 						node.selected = true;
-						new_node.className = new_node.className + ' selected';
+						new_node.className = new_node.className + ' ' + selected_option_class;
 					} else {
-						removeClass(new_node, 'selected');
+						removeClass(new_node, selected_option_class);
 						node.selected = false;
 					}
 					if (triggerEvent) {
@@ -136,7 +138,7 @@
 
 				new_node.innerHTML = text;
 				new_node.unselectable = 'on';
-				new_node.className = settings.option_class + (node.selected ? ' selected' : '');
+				new_node.className = settings.option_class + (node.selected ? '' + selected_option_class : '');
 				new_node.onclick = function(e) {
 					e = e || window.event;
 					if (node.selected) {

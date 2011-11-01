@@ -67,6 +67,9 @@ NOTE: Any and all config parameters are optional!
  * **option_class** - class for the option div
    * type: string
    * default value: mss_option
+ * **selected_option_class** - added to option (div) when selected, removed when deselected
+   * type: string
+   * default value: selected
  * **changeState** - change selected state of all visible options (true - select, false - deselect)
    * type function
 
