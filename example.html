@@ -39,13 +39,17 @@
 		// function that checks if item name matches searchterm 
 		// conf.match = function(searchterm, item) {return !!item.match(new RegExp(searchterm));};
 
-		multiselect_search(document.getElementById('example'), conf);
+		var e = document.getElementsByClassName('mss-selector');
+		for (var i = 0; i < e.length; i++) {
+			multiselect_search(e[i], conf);
+		}
+
 	};
 	</script>
 </head>
 <body>
 <form>
-<select multiple size="11" id="example" name="example" class="mss">
+<select multiple size="11" id="example" name="example" class="mss-selector">
 	<option value="africa_abidjan">Africa/Abidjan</option>
 	<option value="africa_accra">Africa/Accra</option>
 	<option value="africa_addis_ababa">Africa/Addis_Ababa</option>

@@ -64,7 +64,7 @@
 		inherit_size: true,
 		searchbox: null,
 		delay: 200,
-		select_class: '',
+		select_class: 'mss',
 		option_class: 'mss_option',
 		selected_option_class: 'selected'
 	};
@@ -159,7 +159,8 @@
 					}
 				};
 				return {
-					uid: uid,
+					// NOTE: unused variable
+					// uid: uid,
 					text: text,
 					o_node: node,
 					n_node: new_node,
@@ -287,8 +288,6 @@
 
 		if (settings.select_class) {
 			select.className = settings.select_class;
-		} else if (ob.className) {
-			select.className = ob.className;
 		}
 		for (i in list) {
 			if (list.hasOwnProperty(i)) {

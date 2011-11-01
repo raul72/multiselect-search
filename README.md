@@ -63,7 +63,6 @@ NOTE: Any and all config parameters are optional!
  * **select_class** - class name of the div containing the option divs
    * type: string
    * default value: none
-   * NOTE: if not set then className is inherited from the original multiselect
  * **option_class** - class for the option div
    * type: string
    * default value: mss_option
