@@ -62,6 +62,7 @@
 		container_class: null,
 		onchange: null,
 		inherit_size: true,
+		searchbox_inherit_size: false,
 		searchbox: null,
 		delay: 200,
 		select_class: 'mss',
@@ -264,6 +265,10 @@
 		if (settings.inherit_size) {
 			select.style.width = parseInt(ob.offsetWidth, 10) + 'px';
 			select.style.height = parseInt(ob.offsetHeight, 10) + 'px';
+		}
+		if (settings.searchbox_inherit_size) {
+			// NOTE: subtract 2 px as input usually has 1px solid border
+			searchbox.style.width = (parseInt(ob.offsetWidth, 10)-2) + 'px';
 		}
 
 		if (settings.select_class) {

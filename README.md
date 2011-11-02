@@ -53,6 +53,9 @@ NOTE: Any and all config parameters are optional!
  * **inherit_size** - if set `true` original multiselect offset{Width,Height} will be set as duplicated multiselect width,height
    * type:  boolean
    * default value: true
+ * **searchbox_inherit_size** - if set `true` original multiselect offsetWidth will be set as searchbox width
+   * type:  boolean
+   * default value: false
  * **delay** - delay between last keyup and when search is executed
    * type: int
    * default: 200
