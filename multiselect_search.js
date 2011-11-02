@@ -282,7 +282,7 @@
 
 		div.appendChild(select);
 
-		//ob.style.display = 'none';
+		ob.style.display = 'none';
 		insertafter(div, ob);
 
 		instance.get_selected = get_selected;
