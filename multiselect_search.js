@@ -298,6 +298,17 @@
 		instance.searchbox_node = searchbox;
 		instance.select_node = select;
 		instance.search = search;
+		instance.onchange = function(method){
+			if (typeof settings.onchange != 'function') {
+				settings.onchange = method;
+				return;
+			}
+			var old = settings.onchange;
+			settings.onchange = function() {
+				old();
+				method();
+			}
+		};
 		instance.changeState = function(to, visibleOnly) {
 			var i;
 			visibleOnly = visibleOnly === true;

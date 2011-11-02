@@ -72,24 +72,25 @@ NOTE: Any and all config parameters are optional!
  * **selected_option_class** - added to option (div) when selected, removed when deselected
    * type: string
    * default value: selected
- * **changeState(to = true, [visibleOnly = false])** - change selected state of all options
-   * type function
-   * params:
-     * **to** - if true options will be marked as selected, if false deselected
-     * **visibleOnly** - if set true only the options that are visible will be changed
+
 
 ## return value
 if given object is not multiselect then return value is `false`
 
 otherwise return value is object with following keys:
  
- * **get_selected** - functions that returns selected options as objects in array, object keys are:
+ * **get_selected()** - functions that returns selected options as objects in array, object keys are:
    * **text** - option name (option innerHTML)
    * **changeState** method to change selected status (true - select, false - deselect)
- * **get_selected_values** - (deprecated) functions that returns selected options names (option innerHTML) as array
+ * **get_selected_values()** - (deprecated) functions that returns selected options names (option innerHTML) as array
  * **container_node** - dom element container div
  * **searchbox_node** - dom element searchbox
  * **select_node** - dom element div that represents the select tag (contains divs that represent option tags)
- * **search** - function - if you externally wish to execute search - function param is searchterm
- * **changeState** - function - changes selected status for all visible options
- * **showSelected** - filters the options so that only selected options are shown
+ * **search(searchterm)** - function - if you externally wish to execute search - function param is searchterm
+ * **changeState(to = true, [visibleOnly = false])** - change selected state of all options
+   * params:
+     * **to** - if true options will be marked as selected, if false deselected
+     * **visibleOnly** - if set true only the options that are visible will be changed
+ * **showSelected()** - filters the options so that only selected options are shown
+ * **onchange(method = function(){})** method that allows attaching functions that will be executed every time an option selected status is changed
+    * NOTE: stacks - doesn't overwrite the onchange event from settings and allows attaching multiple methods
