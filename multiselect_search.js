@@ -209,7 +209,7 @@
 		function __search(term, forced) {
 			term = term || '';
 			forced = forced === true;
-			var	i;
+			var	i, m;
 			if (term === last_search && !forced) {
 				return;
 			}
@@ -217,7 +217,11 @@
 
 			for (i in list) {
 				if (list.hasOwnProperty(i)) {
-					if (!term || settings.match(term, list[i].text)) {
+					m = settings.match.call(instance, term, list[i].text);
+					if (m === -1) {
+						continue;
+					}
+					if (!term || m) {
 						if (!list[i].visible) {
 							list[i].n_node.style.display = 'block';
 						}
