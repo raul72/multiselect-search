@@ -27,6 +27,13 @@
 		background-color: #457;
 		color: #fff;
 	}
+	.mss_footer {
+		font: 10px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
+		color: #555;
+	}
+	.mss_footer a {
+		color: #5555ff;
+	}
 	</style>
 	<script type="text/javascript">
 	window.onload = function(){
@@ -44,13 +51,11 @@
 			selected_values.innerHTML = '';
 			selected_values.appendChild(document.createTextNode('Selected items:'));
 			for (i = 0; i < vals.length; i++) {
-				selected_values.appendChild(document.createTextNode(' ' + vals[i].text + (i + 1 < vals.length ? ',' : '')));
 
+				selected_values.appendChild(document.createTextNode(' ' + vals[i].text + (i + 1 < vals.length ? ',' : '')));
 				selected_values.appendChild(document.createTextNode(' ('));
 				(function(elem){
 					link = document.createElement('a');
-					link.style.font = '10px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif';
-					link.style.color = '#5555ff';
 					link.href = '#';
 					link.onclick = function(e) {
 						e = e || window.event;
@@ -86,10 +91,11 @@
 		if (!mss) {
 			return;
 		}
+		var mss_footer = document.createElement('div');
+		mss_footer.className = 'mss_footer';
+		mss.container_node.appendChild(mss_footer);
 
 		var select_all = document.createElement('a');
-		select_all.style.font = '10px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif';
-		select_all.style.color = '#5555ff';
 		select_all.href = '#';
 		select_all.onclick = function(e) {
 			e = e || window.event;
@@ -98,20 +104,14 @@
 				e.stopPropagation();
 				e.preventDefault();
 			}
-			mss.changeState(true);
+			mss.changeState(true, true);
 		}
 		select_all.innerHTML = 'select all';
-		mss.container_node.appendChild(select_all);
+		mss_footer.appendChild(select_all);
 
-		var sep = document.createElement('span');
-		sep.style.font = '10px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif';
-		sep.style.color = '#555555';
-		sep.innerHTML = '&nbsp;|&nbsp;';
-		mss.container_node.appendChild(sep);
+		mss_footer.appendChild(document.createTextNode("\u00a0|\u00a0")); // \u00a0 = &nbsp;
 
 		var select_none = document.createElement('a');
-		select_none.style.font = '10px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif';
-		select_none.style.color = '#5555ff';
 		select_none.href = '#';
 		select_none.onclick = function(e) {
 			e = e || window.event;
@@ -120,21 +120,15 @@
 				e.stopPropagation();
 				e.preventDefault();
 			}
-			mss.changeState(false);
+			mss.changeState(false, true);
 		}
 		select_none.innerHTML = 'select none';
-		mss.container_node.appendChild(select_none);
+		mss_footer.appendChild(select_none);
 
 // ------------------------
-		var sep = document.createElement('span');
-		sep.style.font = '10px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif';
-		sep.style.color = '#555555';
-		sep.innerHTML = '&nbsp;|&nbsp;';
-		mss.container_node.appendChild(sep);
+		mss_footer.appendChild(document.createTextNode("\u00a0|\u00a0")); // \u00a0 = &nbsp;
 
 		var select_none = document.createElement('a');
-		select_none.style.font = '10px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif';
-		select_none.style.color = '#5555ff';
 		select_none.href = '#';
 		select_none.onclick = function(e) {
 			e = e || window.event;
@@ -146,13 +140,11 @@
 			mss.showSelected();
 		}
 		select_none.innerHTML = 'show selected';
-		mss.container_node.appendChild(select_none);
+		mss_footer.appendChild(select_none);
 // ------------------------
 
 		selected_values = document.createElement('div');
-		selected_values.style.font = '10px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif';
-		selected_values.style.color = '#555555';
-		mss.container_node.appendChild(selected_values);
+		mss_footer.appendChild(selected_values);
 
 
 
