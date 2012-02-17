@@ -173,6 +173,8 @@
 				if (!cnodes.hasOwnProperty || cnodes.hasOwnProperty(i)) {
 					if (cnodes[i].nodeName && cnodes[i].nodeName.toString().toLowerCase() === 'option') {
 						list[list.length] = new_list_element(cnodes[i], list.length);
+					} else if (cnodes[i].nodeName && cnodes[i].nodeName.toString().toLowerCase() === 'optgroup') {
+						list = list.concat(get_list(cnodes[i]));
 					}
 				}
 			}
