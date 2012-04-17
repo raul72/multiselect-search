@@ -89,33 +89,66 @@
 	};
 
 	window.multiselect_search = function (ob, settings) {
-		var last_clicked = null;
 
 		if (!ob || !ob.nodeName || ob.nodeName.toString().toLowerCase() !== 'select' || !ob.multiple) {
 			// do nothing if given element isn't multiple select
 			return false;
 		}
 
-		settings = settings || {};
-		settings = config_merge(default_settings, settings);
+		settings = config_merge(default_settings, settings || {});
 
-		function shiftclick(s, e) {
-			if (s > e) {
-				return;
-			}
-			var i;
-			for (i = s; i <= e; i++) {
-				if (list[i].visible) {
-					list[i].changeState(true, false);
-				}
-			}
-		}
+		var list = [],
+			div,
+			searchbox,
+			select,
+			last_search = '',
+			i,
+			instance = {},
+			timeout,
+			active_option = null;
 
-		function get_list(ob) {
+		function getOptions(ob) {
 			var i,
 				cnodes = ob.childNodes,
 				list = [],
 				selected_option_class = settings.selected_option_class;
+
+			function option_onclick_event(e, opt) {
+				if (opt.o_node.selected) {
+					opt.changeState(false, false);
+				} else {
+					opt.changeState(true, false);
+				}
+				if (active_option) {
+					removeClass(active_option.n_node, 'active');
+					if (e.shiftKey) {
+						// on shift-click change the state of all the options
+						// from last clicked option to currently clicked option
+						// to whatever state the last clicked option is
+						var start, end, i, new_status = active_option.o_node.selected;
+						if (opt.uid < active_option.uid) {
+							start = opt.uid;
+							end = active_option.uid;
+						} else {
+							start = active_option.uid;
+							end = opt.uid;
+						}
+						if (start != end) {
+							for (i = start; i <= end; i++) {
+								if (list[i].visible) {
+									list[i].changeState(new_status, false);
+								}
+							}
+						}
+					}
+				}
+				active_option = list[opt.uid];
+				active_option.n_node.className = active_option.n_node.className + ' active';
+				if (settings.onchange) {
+					settings.onchange();
+				}
+			}
+
 			function new_list_element(node, uid) {
 				var text = cnodes[i].innerHTML,
 					new_node = document.createElement('div');
@@ -141,23 +174,7 @@
 				new_node.unselectable = 'on';
 				new_node.className = settings.option_class + (node.selected ? ' ' + selected_option_class : '');
 				new_node.onclick = function(e) {
-					e = e || window.event;
-					if (node.selected) {
-						changeState(false, false);
-					} else {
-						changeState(true, false);
-					}
-					if (e.shiftKey && last_clicked !== null) {
-						if (uid < last_clicked) {
-							shiftclick(uid, last_clicked);
-						} else {
-							shiftclick(last_clicked, uid);
-						}
-					}
-					last_clicked = uid;
-					if (settings.onchange) {
-						settings.onchange();
-					}
+					option_onclick_event(e || window.event, list[uid]);
 				};
 				return {
 					uid: uid,
@@ -174,21 +191,12 @@
 					if (cnodes[i].nodeName && cnodes[i].nodeName.toString().toLowerCase() === 'option') {
 						list[list.length] = new_list_element(cnodes[i], list.length);
 					} else if (cnodes[i].nodeName && cnodes[i].nodeName.toString().toLowerCase() === 'optgroup') {
-						list = list.concat(get_list(cnodes[i]));
+						list = list.concat(getOptions(cnodes[i]));
 					}
 				}
 			}
 			return list;
 		}
-
-		var list = get_list(ob),
-			div,
-			searchbox,
-			select,
-			last_search = '',
-			i,
-			instance = {},
-			timeout;
 
 		function get_selected() {
 			var r = [], i;
@@ -236,6 +244,10 @@
 			}
 			select.scrollTop = 0;
 		}
+
+
+		list = getOptions(ob);
+
 
 		// container div
 		div = document.createElement('div');
