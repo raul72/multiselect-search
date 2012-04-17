@@ -55,20 +55,109 @@
 		ob.className = nc.join(' ');
 	}
 
-	default_settings = {
-		match: match,
-		searchbox_class: null,
-		container_id: null,
-		container_class: null,
-		onchange: null,
-		inherit_size: true,
-		searchbox_inherit_size: false,
-		searchbox: null,
-		delay: 200,
-		select_class: 'mss',
-		option_class: 'mss_option',
-		selected_option_class: 'selected'
-	};
+	/*
+	* fetches options from HTMLSelectElement, creates div nodes
+	* returns list as array where each value is an options with params:
+	* - uid - int - Unique ID, also the key
+	* - text - string - human readable value (option InnerHtml)
+	* - o_node - HTMLOptionElement - the original option
+	* - n_node - HTMLDivElement - the copy of the option
+	* - visible - boolean - is the option currently visible or hidden
+	* - changeState - function([to = true, [triggerEvent = true]]) - change option selected state
+	* --- to - true to selected, false to deselected
+	* --- triggerEvent - trigger settings.onchange event if it is defined
+	*/
+	function getOptions(ob) {
+		var i,
+			cnodes = ob.childNodes,
+			list = [],
+			selected_option_class = settings.selected_option_class,
+			active_option = null;
+
+		function option_onclick_event(e, opt) {
+			if (opt.o_node.selected) {
+				opt.changeState(false, false);
+			} else {
+				opt.changeState(true, false);
+			}
+			if (active_option) {
+				removeClass(active_option.n_node, 'active');
+				if (e.shiftKey) {
+					// on shift-click change the state of all the options
+					// from last clicked option to currently clicked option
+					// to whatever state the last clicked option is
+					var start, end, i, new_status = active_option.o_node.selected;
+					if (opt.uid < active_option.uid) {
+						start = opt.uid;
+						end = active_option.uid;
+					} else {
+						start = active_option.uid;
+						end = opt.uid;
+					}
+					if (start != end) {
+						for (i = start; i <= end; i++) {
+							if (list[i].visible) {
+								list[i].changeState(new_status, false);
+							}
+						}
+					}
+				}
+			}
+			active_option = list[opt.uid];
+			active_option.n_node.className = active_option.n_node.className + ' active';
+			if (settings.onchange) {
+				settings.onchange();
+			}
+		}
+
+		function new_list_element(node, uid) {
+			var text = cnodes[i].innerHTML,
+				new_node = document.createElement('div');
+
+			function changeState(to, triggerEvent) {
+				to = to !== false;
+				triggerEvent = triggerEvent !== false;
+				if (to) {
+					node.selected = true;
+					new_node.className = new_node.className + ' ' + selected_option_class;
+				} else {
+					removeClass(new_node, selected_option_class);
+					node.selected = false;
+				}
+				if (triggerEvent) {
+					if (settings.onchange) {
+						settings.onchange();
+					}
+				}
+			}
+
+			new_node.innerHTML = text;
+			new_node.unselectable = 'on';
+			new_node.className = settings.option_class + (node.selected ? ' ' + selected_option_class : '');
+			new_node.onclick = function(e) {
+				option_onclick_event(e || window.event, list[uid]);
+			};
+			return {
+				uid: uid,
+				text: text,
+				o_node: node,
+				n_node: new_node,
+				visible: true,
+				changeState: changeState
+			};
+		}
+		for (i in cnodes) {
+			// NOTE: For IE there is no hasOwnProperty method for childNodes
+			if (!cnodes.hasOwnProperty || cnodes.hasOwnProperty(i)) {
+				if (cnodes[i].nodeName && cnodes[i].nodeName.toString().toLowerCase() === 'option') {
+					list[list.length] = new_list_element(cnodes[i], list.length);
+				} else if (cnodes[i].nodeName && cnodes[i].nodeName.toString().toLowerCase() === 'optgroup') {
+					list = list.concat(getOptions(cnodes[i]));
+				}
+			}
+		}
+		return list;
+	}
 
 	function config_merge(old, newc) {
 		var i, out = {};
@@ -88,6 +177,21 @@
 		default_settings = config_merge(default_settings, settings);
 	};
 
+	default_settings = {
+		match: match,
+		searchbox_class: null,
+		container_id: null,
+		container_class: null,
+		onchange: null,
+		inherit_size: true,
+		searchbox_inherit_size: false,
+		searchbox: null,
+		delay: 200,
+		select_class: 'mss',
+		option_class: 'mss_option',
+		selected_option_class: 'selected'
+	};
+
 	window.multiselect_search = function (ob, settings) {
 
 		if (!ob || !ob.nodeName || ob.nodeName.toString().toLowerCase() !== 'select' || !ob.multiple) {
@@ -96,110 +200,6 @@
 		}
 
 		settings = config_merge(default_settings, settings || {});
-
-		/*
-		* fetches options from HTMLSelectElement, creates div nodes
-		* returns list as array where each value is an options with params:
-		* - uid - int - Unique ID, also the key
-		* - text - string - human readable value (option InnerHtml)
-		* - o_node - HTMLOptionElement - the original option
-		* - n_node - HTMLDivElement - the copy of the option
-		* - visible - boolean - is the option currently visible or hidden
-		* - changeState - function([to = true, [triggerEvent = true]]) - change option selected state
-		* --- to - true to selected, false to deselected
-		* --- triggerEvent - trigger settings.onchange event if it is defined
-		*/
-		function getOptions(ob) {
-			var i,
-				cnodes = ob.childNodes,
-				list = [],
-				selected_option_class = settings.selected_option_class,
-				active_option = null;
-
-			function option_onclick_event(e, opt) {
-				if (opt.o_node.selected) {
-					opt.changeState(false, false);
-				} else {
-					opt.changeState(true, false);
-				}
-				if (active_option) {
-					removeClass(active_option.n_node, 'active');
-					if (e.shiftKey) {
-						// on shift-click change the state of all the options
-						// from last clicked option to currently clicked option
-						// to whatever state the last clicked option is
-						var start, end, i, new_status = active_option.o_node.selected;
-						if (opt.uid < active_option.uid) {
-							start = opt.uid;
-							end = active_option.uid;
-						} else {
-							start = active_option.uid;
-							end = opt.uid;
-						}
-						if (start != end) {
-							for (i = start; i <= end; i++) {
-								if (list[i].visible) {
-									list[i].changeState(new_status, false);
-								}
-							}
-						}
-					}
-				}
-				active_option = list[opt.uid];
-				active_option.n_node.className = active_option.n_node.className + ' active';
-				if (settings.onchange) {
-					settings.onchange();
-				}
-			}
-
-			function new_list_element(node, uid) {
-				var text = cnodes[i].innerHTML,
-					new_node = document.createElement('div');
-
-				function changeState(to, triggerEvent) {
-					to = to !== false;
-					triggerEvent = triggerEvent !== false;
-					if (to) {
-						node.selected = true;
-						new_node.className = new_node.className + ' ' + selected_option_class;
-					} else {
-						removeClass(new_node, selected_option_class);
-						node.selected = false;
-					}
-					if (triggerEvent) {
-						if (settings.onchange) {
-							settings.onchange();
-						}
-					}
-				}
-
-				new_node.innerHTML = text;
-				new_node.unselectable = 'on';
-				new_node.className = settings.option_class + (node.selected ? ' ' + selected_option_class : '');
-				new_node.onclick = function(e) {
-					option_onclick_event(e || window.event, list[uid]);
-				};
-				return {
-					uid: uid,
-					text: text,
-					o_node: node,
-					n_node: new_node,
-					visible: true,
-					changeState: changeState
-				};
-			}
-			for (i in cnodes) {
-				// NOTE: For IE there is no hasOwnProperty method for childNodes
-				if (!cnodes.hasOwnProperty || cnodes.hasOwnProperty(i)) {
-					if (cnodes[i].nodeName && cnodes[i].nodeName.toString().toLowerCase() === 'option') {
-						list[list.length] = new_list_element(cnodes[i], list.length);
-					} else if (cnodes[i].nodeName && cnodes[i].nodeName.toString().toLowerCase() === 'optgroup') {
-						list = list.concat(getOptions(cnodes[i]));
-					}
-				}
-			}
-			return list;
-		}
 
 		var list = getOptions(ob),
 			div,
