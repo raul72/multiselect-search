@@ -67,7 +67,7 @@
 	* --- to - true to selected, false to deselected
 	* --- triggerEvent - trigger settings.onchange event if it is defined
 	*/
-	function getOptions(ob) {
+	function getOptions(ob, settings) {
 		var i,
 			cnodes = ob.childNodes,
 			list = [],
@@ -201,7 +201,7 @@
 
 		settings = config_merge(default_settings, settings || {});
 
-		var list = getOptions(ob),
+		var list = getOptions(ob, settings),
 			div,
 			searchbox,
 			select,
