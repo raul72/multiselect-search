@@ -97,21 +97,24 @@
 
 		settings = config_merge(default_settings, settings || {});
 
-		var list = [],
-			div,
-			searchbox,
-			select,
-			last_search = '',
-			i,
-			instance = {},
-			timeout,
-			active_option = null;
-
+		/*
+		* fetches options from HTMLSelectElement, creates div nodes
+		* returns list as array where each value is an options with params:
+		* - uid - int - Unique ID, also the key
+		* - text - string - human readable value (option InnerHtml)
+		* - o_node - HTMLOptionElement - the original option
+		* - n_node - HTMLDivElement - the copy of the option
+		* - visible - boolean - is the option currently visible or hidden
+		* - changeState - function([to = true, [triggerEvent = true]]) - change option selected state
+		* --- to - true to selected, false to deselected
+		* --- triggerEvent - trigger settings.onchange event if it is defined
+		*/
 		function getOptions(ob) {
 			var i,
 				cnodes = ob.childNodes,
 				list = [],
-				selected_option_class = settings.selected_option_class;
+				selected_option_class = settings.selected_option_class,
+				active_option = null;
 
 			function option_onclick_event(e, opt) {
 				if (opt.o_node.selected) {
@@ -198,6 +201,15 @@
 			return list;
 		}
 
+		var list = getOptions(ob),
+			div,
+			searchbox,
+			select,
+			last_search = '',
+			i,
+			instance = {},
+			timeout;
+
 		function get_selected() {
 			var r = [], i;
 			for (i in list) {
@@ -244,10 +256,6 @@
 			}
 			select.scrollTop = 0;
 		}
-
-
-		list = getOptions(ob);
-
 
 		// container div
 		div = document.createElement('div');
