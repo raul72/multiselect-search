@@ -143,7 +143,13 @@
 				o_node: node,
 				n_node: new_node,
 				visible: true,
-				changeState: changeState
+				changeState: changeState,
+				show: function() {
+					new_node.style.display = 'block';
+				},
+				hide: function() {
+					new_node.style.display = 'none';
+				}
 			};
 		}
 		for (i in cnodes) {
@@ -245,11 +251,11 @@
 					}
 					if (!term || m) {
 						if (!list[i].visible) {
-							list[i].n_node.style.display = 'block';
+							list[i].show();
 						}
 						list[i].visible = true;
 					} else if (list[i].visible) {
-						list[i].n_node.style.display = 'none';
+						list[i].hide();
 						list[i].visible = false;
 					}
 				}
@@ -367,11 +373,11 @@
 				if (list.hasOwnProperty(i)) {
 					if (list[i].o_node.selected) {
 						if (!list[i].visible) {
-							list[i].n_node.style.display = 'block';
+							list[i].show();
 						}
 						list[i].visible = true;
 					} else if (list[i].visible) {
-						list[i].n_node.style.display = 'none';
+						list[i].hide();
 						list[i].visible = false;
 					}
 				}
