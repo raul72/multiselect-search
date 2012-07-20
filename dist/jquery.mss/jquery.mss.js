@@ -478,11 +478,10 @@
 			}
 			if (settings.showSelectedList) {
 				var $list = $('<div/>').appendTo($footer),
-				showSelectedList = function () {
+                    showSelectedList = function() {
 					$list.html('');
 
-					var vals = mss.get_selected(),
-						i;
+					var vals = mss.get_selected();
 					if (!vals.length) {
 						return;
 					}
