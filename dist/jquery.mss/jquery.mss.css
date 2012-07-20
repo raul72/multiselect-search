@@ -4,7 +4,7 @@
 	-moz-user-select: none; /* Gecko (Firefox) */
 	-khtml-user-select:none; /* Webkit (Safari, Chrome) */
 	cursor: pointer;
-	font: 10px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
+	font: 12px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
 }
 .mss .active {
 	border-bottom-style: dotted;
