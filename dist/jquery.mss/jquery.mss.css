@@ -4,6 +4,7 @@
 	-moz-user-select: none; /* Gecko (Firefox) */
 	-khtml-user-select:none; /* Webkit (Safari, Chrome) */
 	cursor: pointer;
+	font: 10px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
 }
 .mss .active {
 	border-bottom-style: dotted;
@@ -20,8 +21,9 @@ div.mss {
 	background-color: #457;
 	color: #fff;
 }
+
 .mss_searchbox {
-	font: 10px gray "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
+	font: 10px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
 	border-width: 1px;
 	height: 18px;
 	line-height: 18px;
