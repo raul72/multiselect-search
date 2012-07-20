@@ -2,8 +2,11 @@
 <html>
 <head>
 	<title>Multiselect search</title>
-	<script type="text/javascript" src="multiselect_search.js"></script>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+	<script type="text/javascript" src="../libs/jquery/jquery.js"></script>
+	<link rel="stylesheet" href="../src/mss.css">
+	<link rel="stylesheet" href="../src/jquery.mss.css">
+	<script type="text/javascript" src="../src/mss.js"></script>
+	<script type="text/javascript" src="../src/jquery.mss.js"></script>
 	<style type="text/css">
 	* {
 		margin: 0;
@@ -12,168 +15,31 @@
 	body {
 		margin: 10px;
 	}
-	.mss .mss_option {
-		border-bottom: 1px solid silver;
-		user-select: none; /* CSS3 */
-		-moz-user-select: none; /* Gecko (Firefox) */
-		-khtml-user-select:none; /* Webkit (Safari, Chrome) */
-		font: 12px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
-		cursor: pointer;
-	}
-	.mss .active {
-		border-bottom-style: dotted;
-	}
-	div.mss {
-		border: 1px solid silver;
-		width: 200px;
-		height: 200px;
-		height: 500px;
-		overflow: auto;
-		overflow-x: hidden;
-		overflow-y: scroll;
-	}
-	.mss .selected {
-		background-color: #457;
-		color: #fff;
-	}
-	.mss_searchbox {
-		font: 10px gray "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
-		border-width: 1px;
-		height: 18px;
-		line-height: 18px;
-		margin-bottom: 2px;
-	}
-	.mss_footer {
-		font: 10px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
-		color: #555;
-	}
-	.mss_footer a, .mss_footer a:visited, .mss_footer a:hover {
-		color: #55f;
-		text-decoration: none;
-	}
 	</style>
 	<script type="text/javascript">
-		(function($){
-			/**
-			 * jQuery plugin for multiselect_search
-			 *
-			 * @param options {selectAllLinks: false,showSelectedLink: false,showSelectedList: false}
-			 * @param mss_config - config passed on to multiselect_search
-			 */
-			$.fn.mss = function(options, mss_config) {
-				var settings = {
-						selectAllLinks: false,
-						showSelectedLink: false,
-						showSelectedList: false
-					};
-				$.extend(settings, options);
+		$(document).ready(function(){
+			$('#example').mss({
+				selectAllLinks: true,
+				showSelectedList: true
+			}, {
+				searchbox_class: 'mss_searchbox',
+				searchbox_inherit_size: true
+			});
 
-				this.each(function() {
-
-					var mss = multiselect_search(this, mss_config);
-					if (!mss) {
-						return;
-					}
-
-					if (!settings.selectAllLinks && !settings.showSelectedLink && !settings.showSelectedList) {
-						return;
-					}
-
-					var $footer = $('<span/>').addClass('mss_footer').appendTo(mss.container_node);
-
-					if (settings.selectAllLinks) {
-						$('<a/>')
-							.html('select all')
-							.attr('href', '#')
-							.click(function(){
-								mss.changeState(true, true);
-								return false;
-							})
-							.appendTo($footer);
-
-						$('<span/>').html(' | ').appendTo($footer);
-
-						$('<a/>')
-							.html('select none')
-							.attr('href', '#')
-							.click(function(){
-								mss.changeState(false, true);
-								return false;
-							})
-							.appendTo($footer);
-
-						if (settings.showSelectedLink) {
-							$('<span/>').html(' | ').appendTo($footer);
-						}
-					}
-					if (settings.showSelectedLink) {
-						$('<a/>')
-							.html('show selected')
-							.attr('href', '#')
-							.click(function(){
-								mss.showSelected();
-								return false;
-							})
-							.appendTo($footer);
-					}
-					if (settings.showSelectedList) {
-						var $list = $('<div/>').appendTo($footer);
-						function showSelectedList() {
-							$list.html('');
-
-							var vals = mss.get_selected(),
-								i;
-							if (!vals.length) {
-								return;
-							}
-							$list.append('Selected Items:');
-
-							$.each(vals, function(i) {
-								var opt = this;
-								$list.append(' ' + this.text + ' (');
-								$list.append(
-									$('<a/>')
-										.html('x')
-										.attr('href', '#')
-										.click(function(){
-											opt.changeState(false);
-											return false;
-									})
-								);
-								$list.append(')' + (i + 1 < vals.length ? ',' : ''));
-							});
-						}
-						showSelectedList();
-						mss.onchange(showSelectedList);
-					}
-				});
-			};
-		})(jQuery);
-
-
-$(document).ready(function(){
-	$('#example').mss({
-		selectAllLinks: true,
-		showSelectedList: true
-	}, {
-		searchbox_class: 'mss_searchbox',
-		searchbox_inherit_size: true
-	});
-
-	// styling searchbox
-	$('.mss_searchbox').focus(function(){
-		if (this.value == 'search...') {
-			this.value = '';
-			this.style.color = '#000000';
-		}
-	}).blur(function(){
-		if (this.value == '') {
-			this.value = 'search...';
-			this.style.color = '#555555';
-		}
-	}).val('search...')
-	.css('color', '#555555');
-});
+			// styling searchbox
+			$('.mss_searchbox').focus(function(){
+				if (this.value == 'search...') {
+					this.value = '';
+					this.style.color = '#000000';
+				}
+			}).blur(function(){
+				if (this.value == '') {
+					this.value = 'search...';
+					this.style.color = '#555555';
+				}
+			}).val('search...')
+			.css('color', '#555555');
+		});
 	</script>
 </head>
 <body>

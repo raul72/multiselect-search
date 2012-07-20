@@ -2,31 +2,8 @@
 <html>
 <head>
 	<title>Multiselect search</title>
-	<script type="text/javascript" src="multiselect_search.js"></script>
-	<style type="text/css">
-	.mss .mss_option {
-		border-bottom: 1px solid silver;
-		user-select: none; /* CSS3 */
-		-moz-user-select: none; /* Gecko (Firefox) */
-		-khtml-user-select:none; /* Webkit (Safari, Chrome) */
-		cursor: pointer;
-	}
-	.mss .active {
-		border-bottom-style: dotted;
-	}
-	div.mss {
-		border: 1px solid silver;
-		width: 200px;
-		height: 200px;
-		overflow: auto;
-		overflow-x: hidden;
-		overflow-y: scroll;
-	}
-	.mss .selected {
-		background-color: #457;
-		color: #fff;
-	}
-	</style>
+	<link rel="stylesheet" href="../src/mss.css">
+	<script type="text/javascript" src="../src/mss.js"></script>
 	<script type="text/javascript">
 	window.onload = function(){
 		var conf = {};
@@ -47,7 +24,6 @@
 		for (var i = 0; i < e.length; i++) {
 			multiselect_search(e[i], conf);
 		}
-
 	};
 	</script>
 </head>
