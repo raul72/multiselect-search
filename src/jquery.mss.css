@@ -1,0 +1,15 @@
+.mss_searchbox {
+	font: 10px gray "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
+	border-width: 1px;
+	height: 18px;
+	line-height: 18px;
+	margin-bottom: 2px;
+}
+.mss_footer {
+	font: 10px "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
+	color: #555;
+}
+.mss_footer a, .mss_footer a:visited, .mss_footer a:hover {
+	color: #55f;
+	text-decoration: none;
+}

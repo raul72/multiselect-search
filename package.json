@@ -1,0 +1,32 @@
+{
+  "name": "mss",
+  "title": "Multiselect Search",
+  "description": "Multiselect Search",
+  "version": "0.0.1",
+  "homepage": "https://github.com/raul72/multiselect-search",
+  "author": {
+    "name": "raul",
+    "email": "raulraat@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/raul72/multiselect-search.git"
+  },
+  "bugs": {
+    "url": "https://github.com/raul72/multiselect-search/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/raul72/multiselect-search/blob/master/LICENSE-MIT"
+    },
+    {
+      "type": "GPL",
+      "url": "https://github.com/raul72/multiselect-search/blob/master/LICENSE-GPL"
+    }
+  ],
+  "dependencies": {
+    "jquery": "~1.5"
+  },
+  "keywords": []
+}

@@ -1,0 +1,22 @@
+.mss .mss_option {
+	border-bottom: 1px solid silver;
+	user-select: none; /* CSS3 */
+	-moz-user-select: none; /* Gecko (Firefox) */
+	-khtml-user-select:none; /* Webkit (Safari, Chrome) */
+	cursor: pointer;
+}
+.mss .active {
+	border-bottom-style: dotted;
+}
+div.mss {
+	border: 1px solid silver;
+	width: 200px;
+	height: 200px;
+	overflow: auto;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+.mss .selected {
+	background-color: #457;
+	color: #fff;
+}
