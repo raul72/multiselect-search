@@ -1,4 +1,3 @@
-/*jshint strict: false, forin:true, noarg:true, noempty:true, eqeqeq:true, bitwise:true, undef:true, curly:true, browser:true, indent:4, maxerr:900, smarttabs: true, latedef: true, asi: false */
 /**
  * Multiselect search
  *
